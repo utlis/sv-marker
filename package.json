@@ -1,0 +1,26 @@
+{
+  "name": "sentence-structure-diagram-app",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build:packages": "npm run build --workspace=packages/sentence-structure-data && npm run build --workspace=packages/sentence-structure-tree && npm run build --workspace=packages/sentence-structure-diagram-configurations && npm run build --workspace=packages/sentence-structure-diagram-tree && npm run build --workspace=packages/sentence-structure-diagram-data && npm run build --workspace=packages/sentence-structure-diagram-svg",
+    "build": "npm run build:packages && npm run build --workspace=packages/evaluation && npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "clean": "npm run clean --workspaces"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
+  },
+  "workspaces": [
+    "packages/backend",
+    "packages/frontend",
+    "packages/sentence-structure-data",
+    "packages/sentence-structure-diagram-data",
+    "packages/sentence-structure-diagram-svg",
+    "packages/evaluation",
+    "packages/sentence-structure-diagram-configurations",
+    "packages/sentence-structure-tree",
+    "packages/sentence-structure-diagram-tree"
+  ]
+}

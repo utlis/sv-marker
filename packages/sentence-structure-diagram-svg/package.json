@@ -1,0 +1,22 @@
+{
+  "name": "@sentence-structure-diagram-app/sentence-structure-diagram-svg",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -r dist"
+  },
+  "dependencies": {
+    "@sentence-structure-diagram-app/sentence-structure-data": "^0.1.0",
+    "@sentence-structure-diagram-app/sentence-structure-diagram-configurations": "^0.1.0",
+    "@sentence-structure-diagram-app/sentence-structure-diagram-data": "^0.1.0",
+    "prettier": "^3.7.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
