@@ -1,0 +1,13 @@
+services:
+  - type: web
+    runtime: node
+    name: sentence-structure-diagram-app-backend
+    region: singapore
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: cd packages/backend && npm start
+    envVars:
+      - key: WEB_ORIGIN
+        value: https://chvmvd.github.io
+      - key: GEMINI_API_KEY
+        sync: false

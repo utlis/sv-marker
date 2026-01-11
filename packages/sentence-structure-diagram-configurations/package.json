@@ -1,0 +1,19 @@
+{
+  "name": "@sentence-structure-diagram-app/sentence-structure-diagram-configurations",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -r dist"
+  },
+  "dependencies": {
+    "@sentence-structure-diagram-app/sentence-structure-data": "^0.1.0",
+    "fast-xml-parser": "^5.3.3",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
