@@ -45,7 +45,7 @@ const RangeSchema = z.union([
     (sentenceElementRangeTypeOption) =>
       ({
         "core-sentence-element": z.object({
-          kind: z.literal("sentence-element"),
+          kind: z.literal("core-sentence-element"),
           type: z.literal("core-sentence-element"),
           id: z.uuid(),
           startWordIndex: z.int().nonnegative(),
@@ -108,7 +108,7 @@ const RangeSchema = z.union([
       })[sentenceStructureRangeTypeOption],
   ),
   z.object({
-    kind: z.literal(relationRangeTypeOption),
+    kind: z.literal("relation"),
     type: z.literal("relation"),
     id: z.uuid(),
     startWordIndex: z.int().nonnegative(),

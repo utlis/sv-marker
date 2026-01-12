@@ -466,11 +466,11 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
           <Divider sx={{ my: 2 }} />
           <Stack gap={2}>
             <Typography variant="subtitle1" component="div">
-              レイアウト方式
+              配置方式
             </Typography>
             <Stack direction="row" gap={1}>
               <FormControl>
-                <InputLabel>レイアウト方式</InputLabel>
+                <InputLabel>配置方式</InputLabel>
                 <Select
                   value={configurations.layoutMode}
                   onChange={(e) =>
@@ -479,7 +479,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
                       layoutMode: e.target.value,
                     })
                   }
-                  label="レイアウト方式"
+                  label="配置方式"
                 >
                   <MenuItem value="linear">横並び表示</MenuItem>
                   <MenuItem value="structured">構造化表示</MenuItem>

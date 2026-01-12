@@ -104,7 +104,7 @@ export function convertSentenceStructureDataToSentenceStructureDiagramData(
               ]
             : null,
           position:
-            range.kind === "sentence-element"
+            range.kind === "core-sentence-element"
               ? resolvedConfigurations.sentenceElementPosition.determineSentenceElementRangeSentenceElementPosition(
                   rangePosition,
                 )

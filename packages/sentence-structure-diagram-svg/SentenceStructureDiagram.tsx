@@ -117,7 +117,7 @@ export default function SentenceStructureDiagram(
             </text>
           ),
       )}
-      {/* 矢印 */}
+      {/* 修飾 */}
       {sentenceStructureDiagramData.relations.map((relation) => (
         <path
           key={relation.relationId}

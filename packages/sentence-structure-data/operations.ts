@@ -167,7 +167,7 @@ export function createSentenceElementRange(
     ranges: [
       ...sentenceStructureData.ranges,
       {
-        kind: "sentence-element",
+        kind: "core-sentence-element",
         type: input.type,
         id: rangeId,
         startWordIndex: input.startWordIndex,
@@ -222,53 +222,6 @@ export function createSentenceStructureRange(
         startWordIndex: input.startWordIndex,
         endWordIndex: input.endWordIndex,
         sentenceElementName: null,
-      },
-    ],
-  } satisfies SentenceStructureData);
-
-  if (newSentenceStructureData.success) {
-    return {
-      success: true,
-      data: {
-        newSentenceStructureData: newSentenceStructureData.data,
-        rangeId,
-      },
-    };
-  }
-  const errorMessage =
-    newSentenceStructureData.error.issues.find(
-      (issue) => issue.code === "custom",
-    )?.message ?? null;
-  if (errorMessage) {
-    return {
-      success: false,
-      message: errorMessage,
-    };
-  }
-  throw newSentenceStructureData.error;
-}
-
-export function _createRelationRange(
-  sentenceStructureData: SentenceStructureData,
-  input: {
-    startWordIndex: number;
-    endWordIndex: number;
-  },
-): Result<{
-  newSentenceStructureData: SentenceStructureData;
-  rangeId: string;
-}> {
-  const rangeId = crypto.randomUUID();
-  const newSentenceStructureData = SentenceStructureDataSchema.safeParse({
-    ...sentenceStructureData,
-    ranges: [
-      ...sentenceStructureData.ranges,
-      {
-        kind: "relation",
-        type: "relation",
-        id: rangeId,
-        startWordIndex: input.startWordIndex,
-        endWordIndex: input.endWordIndex,
       },
     ],
   } satisfies SentenceStructureData);
@@ -366,10 +319,10 @@ export function createRelation(
     toRange: { startWordIndex: number; endWordIndex: number };
   },
 ): Result<{ newSentenceStructureData: SentenceStructureData }> {
-  const fromRangeResult: Result<{
+  const fromRangeResult: {
     newSentenceStructureData: SentenceStructureData;
     rangeId: string;
-  }> = (() => {
+  } = (() => {
     const existingFromRange = findRangeByStartAndEndWordIndex(
       sentenceStructureData,
       {
@@ -379,31 +332,37 @@ export function createRelation(
     );
     if (existingFromRange) {
       return {
-        success: true,
-        data: {
-          newSentenceStructureData: sentenceStructureData,
-          rangeId: existingFromRange.id,
-        },
+        newSentenceStructureData: sentenceStructureData,
+        rangeId: existingFromRange.id,
       };
     }
-    return _createRelationRange(sentenceStructureData, {
-      startWordIndex: input.fromRange.startWordIndex,
-      endWordIndex: input.fromRange.endWordIndex,
-    });
-  })();
-  if (!fromRangeResult.success) {
-    return {
-      success: false,
-      message: fromRangeResult.message,
-    };
-  }
 
-  const toRangeResult: Result<{
+    const rangeId = crypto.randomUUID();
+    const newSentenceStructureData: SentenceStructureData = {
+      ...sentenceStructureData,
+      ranges: [
+        ...sentenceStructureData.ranges,
+        {
+          kind: "relation",
+          type: "relation",
+          id: rangeId,
+          startWordIndex: input.fromRange.startWordIndex,
+          endWordIndex: input.fromRange.endWordIndex,
+        },
+      ],
+    };
+    return {
+      newSentenceStructureData,
+      rangeId,
+    };
+  })();
+
+  const toRangeResult: {
     newSentenceStructureData: SentenceStructureData;
     rangeId: string;
-  }> = (() => {
+  } = (() => {
     const existingToRange = findRangeByStartAndEndWordIndex(
-      fromRangeResult.data.newSentenceStructureData,
+      fromRangeResult.newSentenceStructureData,
       {
         startWordIndex: input.toRange.startWordIndex,
         endWordIndex: input.toRange.endWordIndex,
@@ -411,42 +370,61 @@ export function createRelation(
     );
     if (existingToRange) {
       return {
-        success: true,
-        data: {
-          newSentenceStructureData:
-            fromRangeResult.data.newSentenceStructureData,
-          rangeId: existingToRange.id,
-        },
+        newSentenceStructureData: fromRangeResult.newSentenceStructureData,
+        rangeId: existingToRange.id,
       };
     }
-    return _createRelationRange(fromRangeResult.data.newSentenceStructureData, {
-      startWordIndex: input.toRange.startWordIndex,
-      endWordIndex: input.toRange.endWordIndex,
-    });
-  })();
-  if (!toRangeResult.success) {
+
+    const rangeId = crypto.randomUUID();
+    const newSentenceStructureData: SentenceStructureData = {
+      ...fromRangeResult.newSentenceStructureData,
+      ranges: [
+        ...fromRangeResult.newSentenceStructureData.ranges,
+        {
+          kind: "relation",
+          type: "relation",
+          id: rangeId,
+          startWordIndex: input.toRange.startWordIndex,
+          endWordIndex: input.toRange.endWordIndex,
+        },
+      ],
+    };
     return {
-      success: false,
-      message: toRangeResult.message,
+      newSentenceStructureData,
+      rangeId,
+    };
+  })();
+
+  const newSentenceStructureData = SentenceStructureDataSchema.safeParse({
+    ...toRangeResult.newSentenceStructureData,
+    relations: [
+      ...toRangeResult.newSentenceStructureData.relations,
+      {
+        id: crypto.randomUUID(),
+        fromRangeId: fromRangeResult.rangeId,
+        toRangeId: toRangeResult.rangeId,
+      },
+    ],
+  } satisfies SentenceStructureData);
+  if (newSentenceStructureData.success) {
+    return {
+      success: true,
+      data: {
+        newSentenceStructureData: newSentenceStructureData.data,
+      },
     };
   }
-
-  return {
-    success: true,
-    data: {
-      newSentenceStructureData: SentenceStructureDataSchema.parse({
-        ...toRangeResult.data.newSentenceStructureData,
-        relations: [
-          ...toRangeResult.data.newSentenceStructureData.relations,
-          {
-            id: crypto.randomUUID(),
-            fromRangeId: fromRangeResult.data.rangeId,
-            toRangeId: toRangeResult.data.rangeId,
-          },
-        ],
-      } satisfies SentenceStructureData),
-    },
-  };
+  const errorMessage =
+    newSentenceStructureData.error.issues.find(
+      (issue) => issue.code === "custom",
+    )?.message ?? null;
+  if (errorMessage) {
+    return {
+      success: false,
+      message: errorMessage,
+    };
+  }
+  throw newSentenceStructureData.error;
 }
 
 export function findRelationById(
@@ -466,6 +444,15 @@ export function deleteRelation(
 ): SentenceStructureData {
   return SentenceStructureDataSchema.parse({
     ...sentenceStructureData,
+    ranges: sentenceStructureData.ranges.filter(
+      (range) =>
+        range.kind !== "relation" ||
+        sentenceStructureData.relations.some(
+          (relation) =>
+            relation.fromRangeId !== range.id &&
+            relation.toRangeId !== range.id,
+        ),
+    ),
     relations: sentenceStructureData.relations.filter(
       (relation) => relation.id !== input.relationId,
     ),

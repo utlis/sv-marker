@@ -14,7 +14,13 @@ import type {
   SentenceStructureDiagramRangeNode,
   SentenceStructureDiagramWordNode,
 } from "./types.js";
-import { lineHeight, lineSpacing, padding, wordSpacing } from "./constants.js";
+import {
+  indentSpacing,
+  lineHeight,
+  lineSpacing,
+  padding,
+  wordSpacing,
+} from "./constants.js";
 
 type Input<T extends SentenceStructureNode> = {
   sentenceStructureNode: T;
@@ -73,7 +79,7 @@ function createSentenceStructureDiagramRangeNode(
 ): Result<SentenceStructureDiagramRangeNode> {
   let nextNodeStartPosition = { ...input.nextNodeStartPosition };
   let nextLineStartPosition = {
-    start: nextNodeStartPosition.start,
+    start: nextNodeStartPosition.start + indentSpacing,
     top: input.nextLineStartPosition.top,
   };
   const children: SentenceStructureDiagramRangeNode["children"] = [];
@@ -110,6 +116,7 @@ function createSentenceStructureDiagramRangeNode(
       input.maxWidth < nextNodeStartPosition.start + childWidth + padding
     ) {
       nextNodeStartPosition = { ...nextLineStartPosition };
+      nextLineStartPosition.start += indentSpacing;
       nextLineStartPosition.top += lineHeight + lineSpacing;
     }
     const result =
@@ -164,7 +171,7 @@ function createSentenceStructureDiagramCoordinationChildNode(
 ): Result<SentenceStructureDiagramCoordinationChildNode> {
   let nextNodeStartPosition = { ...input.nextNodeStartPosition };
   let nextLineStartPosition = {
-    start: nextNodeStartPosition.start,
+    start: nextNodeStartPosition.start + indentSpacing,
     top: input.nextLineStartPosition.top,
   };
   const children: SentenceStructureDiagramCoordinationChildNode["children"] =
@@ -202,6 +209,7 @@ function createSentenceStructureDiagramCoordinationChildNode(
       input.maxWidth < nextNodeStartPosition.start + childWidth + padding
     ) {
       nextNodeStartPosition = { ...nextLineStartPosition };
+      nextLineStartPosition.start += indentSpacing;
       nextLineStartPosition.top += lineHeight + lineSpacing;
     }
     const result =
@@ -257,7 +265,7 @@ function createSentenceStructureDiagramCoordinationNode(
   let nextNodeStartPosition = { ...input.nextNodeStartPosition };
   let nextLineStartPosition = {
     start: nextNodeStartPosition.start,
-    top: nextNodeStartPosition.top + lineHeight + lineSpacing,
+    top: input.nextLineStartPosition.top,
   };
   const children: SentenceStructureDiagramCoordinationNode["children"] = [];
   for (const child of input.sentenceStructureNode.children) {
@@ -270,6 +278,7 @@ function createSentenceStructureDiagramCoordinationNode(
     });
     children.push(result.sentenceStructureDiagramNode);
     nextNodeStartPosition = { ...result.nextLineStartPosition };
+    nextLineStartPosition = { ...nextNodeStartPosition };
     nextLineStartPosition.top += lineHeight + lineSpacing;
   }
 
@@ -290,7 +299,7 @@ function createSentenceStructureDiagramCoordinationNode(
     },
     nextLineStartPosition: {
       start: input.nextLineStartPosition.start,
-      top: nextLineStartPosition.top,
+      top: nextNodeStartPosition.top,
     },
   };
 }
