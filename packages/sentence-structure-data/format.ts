@@ -91,7 +91,7 @@ export const simplifiedSentenceStructureDataToSentenceStructureData = z.codec(
                   )!,
                 )
               ? {
-                  kind: "sentence-element",
+                  kind: "core-sentence-element",
                   type: simplifiedSentenceElementRangeTypeToSentenceElementRangeTypeMap.get(
                     range.type as any,
                   )!,
@@ -178,7 +178,7 @@ export const simplifiedSentenceStructureDataToSentenceStructureData = z.codec(
               }
             : {
                 type:
-                  range.kind === "sentence-element"
+                  range.kind === "core-sentence-element"
                     ? sentenceElementRangeTypeToSimplifiedSentenceElementRangeTypeMap.get(
                         range.type,
                       )!

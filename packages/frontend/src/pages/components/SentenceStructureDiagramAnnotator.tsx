@@ -255,7 +255,7 @@ export default function SentenceStructureDiagramAnnotator(
             </text>
           ),
       )}
-      {/* 矢印 */}
+      {/* 修飾 */}
       {props.sentenceStructureDiagramData.relations.map((relation) => (
         <path
           key={relation.relationId}

@@ -302,7 +302,7 @@ export default function SentenceStructureEditor() {
                           }
                         }}
                       >
-                        矢印
+                        修飾
                       </Button>
                       <Divider orientation="vertical" flexItem />
                       <Button
@@ -345,7 +345,7 @@ export default function SentenceStructureEditor() {
                       }}
                       onMouseUp={(e) => e.stopPropagation()}
                     >
-                      {(activeRange.kind === "sentence-element"
+                      {(activeRange.kind === "core-sentence-element"
                         ? sentenceElementRangeTypeToAllowedSentenceElementNameOptionsMap[
                             activeRange.type
                           ]
@@ -378,7 +378,7 @@ export default function SentenceStructureEditor() {
                           }
                         }}
                       >
-                        矢印
+                        修飾
                       </Button>
                       <Divider orientation="vertical" flexItem />
                       <Button
@@ -407,7 +407,7 @@ export default function SentenceStructureEditor() {
                   );
                 })()}
 
-              {/* 矢印の作成のキャンセル */}
+              {/* 修飾の作成のキャンセル */}
               {(interactionState.type === "relation-idle" ||
                 interactionState.type === "relation-selecting") &&
                 (() => {
@@ -443,7 +443,7 @@ export default function SentenceStructureEditor() {
                   );
                 })()}
 
-              {/* 矢印の削除 */}
+              {/* 修飾の削除 */}
               {interactionState.type === "relation-selected" &&
                 (() => {
                   const activeRelation = findRelationById(
@@ -484,7 +484,7 @@ export default function SentenceStructureEditor() {
                         }}
                         color="error"
                       >
-                        矢印を削除
+                        修飾を削除
                       </Button>
                     </Paper>
                   );

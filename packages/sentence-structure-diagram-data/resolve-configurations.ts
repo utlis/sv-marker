@@ -81,7 +81,7 @@ function determineSentenceElementPosition(
       };
     case "bottom-left":
       return {
-        x: rangePosition[0]!.start - 4,
+        x: rangePosition[0]!.start + 6,
         y: rangePosition[0]!.bottom + 8,
       };
   }
