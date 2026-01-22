@@ -9,8 +9,8 @@ function isSameRange(range1: Range, range2: Range): boolean {
     range1.startWordIndex === range2.startWordIndex &&
     range1.endWordIndex === range2.endWordIndex &&
     range1.type === range2.type &&
-    (range1.type === "relation" ||
-      (range2.type !== "relation" &&
+    (range1.type === "modification-element" ||
+      (range2.type !== "modification-element" &&
         range1.sentenceElementName === range2.sentenceElementName))
   );
 }

@@ -349,7 +349,7 @@ export default function SentenceStructureEditor() {
                         ? sentenceElementRangeTypeToAllowedSentenceElementNameOptionsMap[
                             activeRange.type
                           ]
-                        : activeRange.kind === "sentence-structure"
+                        : activeRange.kind === "sentence-constituent"
                           ? sentenceStructureRangeTypeToAllowedSentenceElementNameOptionsMap[
                               activeRange.type
                             ]
@@ -527,8 +527,8 @@ export default function SentenceStructureEditor() {
                             {
                               (
                                 {
-                                  "coordinating conjunction": "等位接続詞",
-                                  "correlative conjunction": "相関接続詞",
+                                  coordinator: "等位接続詞",
+                                  correlative: "相関接続詞",
                                   conjunct: "並列要素",
                                 } satisfies Record<
                                   CoordinationChildType,

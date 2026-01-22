@@ -1,0 +1,13 @@
+[project]
+name = "stanza-server"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi[standard]>=0.135.1",
+    "stanza[transformers]>=1.11.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.5",
+]

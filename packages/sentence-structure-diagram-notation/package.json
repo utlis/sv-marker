@@ -1,5 +1,5 @@
 {
-  "name": "@sentence-structure-diagram-app/sentence-structure-data",
+  "name": "@sentence-structure-diagram-app/sentence-structure-diagram-notation",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",

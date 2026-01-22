@@ -16,7 +16,6 @@ import {
   findRangeByStartAndEndWordIndex,
   updateSentenceElementName,
   type CoordinationChildType,
-  type RangeType,
   type SentenceElementName,
   type SentenceElementRangeType,
   type SentenceStructureData,
@@ -40,7 +39,6 @@ type InteractionState =
     }
   | {
       type: "range-selected";
-      rangeType: RangeType;
       rangeId: string;
     }
   | {
@@ -227,7 +225,6 @@ function interactionStateReducer(
               success: true,
               interactionState: {
                 type: "range-selected",
-                rangeType: matchedRange.type,
                 rangeId: matchedRange.id,
               },
               sentenceStructureData,
@@ -322,8 +319,8 @@ function interactionStateReducer(
             sentenceStructureData,
           };
         default: {
-          const _exhaustiveCheck: never = interactionState;
-          return _exhaustiveCheck;
+          interactionState satisfies never;
+          throw new Error("Unreachable");
         }
       }
     case "MOUSE_DOWN_ON_WORD":
@@ -380,8 +377,8 @@ function interactionStateReducer(
             sentenceStructureData,
           };
         default: {
-          const _exhaustiveCheck: never = interactionState;
-          return _exhaustiveCheck;
+          interactionState satisfies never;
+          throw new Error("Unreachable");
         }
       }
     case "MOUSE_ENTER_ON_WORD":
@@ -447,8 +444,8 @@ function interactionStateReducer(
             sentenceStructureData,
           };
         default: {
-          const _exhaustiveCheck: never = interactionState;
-          return _exhaustiveCheck;
+          interactionState satisfies never;
+          throw new Error("Unreachable");
         }
       }
     case "MOUSE_UP_ON_WORD":
@@ -478,7 +475,6 @@ function interactionStateReducer(
               success: true,
               interactionState: {
                 type: "range-selected",
-                rangeType: matchedRange.type,
                 rangeId: matchedRange.id,
               },
               sentenceStructureData,
@@ -573,8 +569,8 @@ function interactionStateReducer(
             sentenceStructureData,
           };
         default: {
-          const _exhaustiveCheck: never = interactionState;
-          return _exhaustiveCheck;
+          interactionState satisfies never;
+          throw new Error("Unreachable");
         }
       }
     case "CREATE_SENTENCE_ELEMENT_RANGE": {
@@ -590,7 +586,6 @@ function interactionStateReducer(
           success: true,
           interactionState: {
             type: "range-selected",
-            rangeType: action.payload.rangeType,
             rangeId: result.data.rangeId,
           },
           sentenceStructureData: result.data.newSentenceStructureData,
@@ -612,7 +607,6 @@ function interactionStateReducer(
           success: true,
           interactionState: {
             type: "range-selected",
-            rangeType: action.payload.rangeType,
             rangeId: result.data.rangeId,
           },
           sentenceStructureData: result.data.newSentenceStructureData,
@@ -631,7 +625,6 @@ function interactionStateReducer(
         success: true,
         interactionState: {
           type: "range-selected",
-          rangeType: matchedRange.type,
           rangeId: action.payload.rangeId,
         },
         sentenceStructureData,
@@ -643,12 +636,13 @@ function interactionStateReducer(
       return {
         success: true,
         interactionState,
-        sentenceStructureData: updateSentenceElementName<
-          typeof interactionState.rangeType
-        >(sentenceStructureData, {
-          rangeId: interactionState.rangeId,
-          sentenceElementName: action.payload.sentenceElementName,
-        }),
+        sentenceStructureData: updateSentenceElementName(
+          sentenceStructureData,
+          {
+            rangeId: interactionState.rangeId,
+            sentenceElementName: action.payload.sentenceElementName,
+          },
+        ),
       };
     case "DELETE_RANGE":
       if (interactionState.type !== "range-selected")
@@ -702,7 +696,6 @@ function interactionStateReducer(
           success: true,
           interactionState: {
             type: "range-selected",
-            rangeType: fromRange.type,
             rangeId: fromRange.id,
           },
           sentenceStructureData,
@@ -773,8 +766,8 @@ function interactionStateReducer(
           };
         }
         default: {
-          const _exhaustiveCheck: never = interactionState;
-          return _exhaustiveCheck;
+          interactionState satisfies never;
+          throw new Error("Unreachable");
         }
       }
     case "CREATE_COORDINATION_CHILD":
@@ -851,8 +844,8 @@ function interactionStateReducer(
         }),
       };
     default: {
-      const _exhaustiveCheck: never = action;
-      return _exhaustiveCheck;
+      action satisfies never;
+      throw new Error("Unreachable");
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@sentence-structure-diagram-app/sentence-structure-data",
+  "name": "@sentence-structure-diagram-app/sentence-structure-data-from-stanza",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -9,7 +9,7 @@
     "clean": "rm -r dist"
   },
   "dependencies": {
-    "fast-xml-parser": "^5.3.3",
+    "@sentence-structure-diagram-app/sentence-structure-data": "^0.1.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {

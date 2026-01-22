@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build:packages": "npm run build --workspace=packages/sentence-structure-data && npm run build --workspace=packages/sentence-structure-tree && npm run build --workspace=packages/sentence-structure-diagram-configurations && npm run build --workspace=packages/sentence-structure-diagram-tree && npm run build --workspace=packages/sentence-structure-diagram-data && npm run build --workspace=packages/sentence-structure-diagram-svg",
+    "build:packages": "npm run build --workspace=packages/sentence-structure-data && npm run build --workspace=packages/sentence-structure-diagram-notation && npm run build --workspace=packages/sentence-structure-diagram && npm run build --workspace=packages/sentence-structure-data-from-stanza",
     "build": "npm run build:packages && npm run build --workspace=packages/evaluation && npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -13,14 +13,12 @@
     "prettier": "^3.7.4"
   },
   "workspaces": [
+    "packages/sentence-structure-data",
+    "packages/sentence-structure-diagram-notation",
+    "packages/sentence-structure-diagram",
+    "packages/sentence-structure-data-from-stanza",
     "packages/backend",
     "packages/frontend",
-    "packages/sentence-structure-data",
-    "packages/sentence-structure-diagram-data",
-    "packages/sentence-structure-diagram-svg",
-    "packages/evaluation",
-    "packages/sentence-structure-diagram-configurations",
-    "packages/sentence-structure-tree",
-    "packages/sentence-structure-diagram-tree"
+    "packages/evaluation"
   ]
 }
