@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import type { SentenceStructureDocument } from "@sentence-structure-diagram-app/sentence-structure-data";
-import type { SentenceStructureDiagramNotation } from "@sentence-structure-diagram-app/sentence-structure-diagram-notation";
+import type { SentenceStructureDocument } from "@sv-marker/sentence-structure-document";
+import type { SentenceStructureDiagramNotation } from "@sv-marker/sentence-structure-diagram-notation";
 import type { SentenceStructureDiagramData } from "../diagram-data/types.js";
 import SentenceStructureDiagram from "./SentenceStructureDiagram.js";
 

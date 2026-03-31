@@ -17,22 +17,31 @@ import type {
 import type { PathCommand, SentenceStructureDiagramData } from "./types.js";
 
 function createWord(
+  sentenceId: string,
   sentenceStructureDiagramLayoutWordNode: SentenceStructureDiagramLayoutWordNode,
 ): SentenceStructureDiagramData["words"][number] {
   return {
-    id: sentenceStructureDiagramLayoutWordNode.id,
+    sentenceId,
+    wordId: sentenceStructureDiagramLayoutWordNode.id,
     text:
       sentenceStructureDiagramLayoutWordNode.text +
       sentenceStructureDiagramLayoutWordNode.whitespaceAfter,
     rectangle: {
       x: sentenceStructureDiagramLayoutWordNode.rectangle.left,
       y: sentenceStructureDiagramLayoutWordNode.rectangle.top,
+      width:
+        sentenceStructureDiagramLayoutWordNode.rectangle.right -
+        sentenceStructureDiagramLayoutWordNode.rectangle.left,
+      height:
+        sentenceStructureDiagramLayoutWordNode.rectangle.bottom -
+        sentenceStructureDiagramLayoutWordNode.rectangle.top,
     },
     style: sentenceStructureDiagramLayoutWordNode.style,
   };
 }
 
 function createUnderline(
+  sentenceId: string,
   sentenceStructureDiagramLayoutNode:
     | SentenceStructureDiagramLayoutSentenceStructureElementNode
     | SentenceStructureDiagramLayoutCoordinationPartNode,
@@ -55,7 +64,8 @@ function createUnderline(
   }
 
   return {
-    id: sentenceStructureDiagramLayoutNode.id,
+    sentenceId,
+    sentenceStructureElementId: sentenceStructureDiagramLayoutNode.id,
     lineSegments: sentenceStructureDiagramLayoutNode.rectangles.map(
       (rectangle) => ({
         x1: rectangle.left,
@@ -77,6 +87,7 @@ function createUnderline(
 }
 
 function createBracket(
+  sentenceId: string,
   sentenceStructureDiagramLayoutNode:
     | SentenceStructureDiagramLayoutSentenceStructureElementNode
     | SentenceStructureDiagramLayoutCoordinationPartNode,
@@ -86,7 +97,8 @@ function createBracket(
   }
 
   return {
-    id: sentenceStructureDiagramLayoutNode.id,
+    sentenceId,
+    sentenceStructureElementId: sentenceStructureDiagramLayoutNode.id,
     openingBracket: {
       text: sentenceStructureDiagramLayoutNode.rangeMarker.openingBracket.text,
       x: sentenceStructureDiagramLayoutNode.rangeMarker.openingBracket.left,
@@ -102,6 +114,7 @@ function createBracket(
 }
 
 function createBox(
+  sentenceId: string,
   sentenceStructureDiagramLayoutNode:
     | SentenceStructureDiagramLayoutSentenceStructureElementNode
     | SentenceStructureDiagramLayoutCoordinationPartNode,
@@ -111,7 +124,8 @@ function createBox(
   }
 
   return {
-    id: sentenceStructureDiagramLayoutNode.id,
+    sentenceId,
+    sentenceStructureElementId: sentenceStructureDiagramLayoutNode.id,
     linePaths: sentenceStructureDiagramLayoutNode.rectangles.map(
       (rectangle, index) => {
         if (
@@ -273,6 +287,7 @@ function createBox(
 }
 
 function createHighlight(
+  sentenceId: string,
   sentenceStructureDiagramLayoutNode:
     | SentenceStructureDiagramLayoutSentenceStructureElementNode
     | SentenceStructureDiagramLayoutCoordinationPartNode,
@@ -282,7 +297,8 @@ function createHighlight(
   }
 
   return {
-    id: sentenceStructureDiagramLayoutNode.id,
+    sentenceId,
+    sentenceStructureElementId: sentenceStructureDiagramLayoutNode.id,
     lineRectangles: sentenceStructureDiagramLayoutNode.rectangles.map(
       (rectangle) => ({
         x: rectangle.left,
@@ -296,6 +312,7 @@ function createHighlight(
 }
 
 function createSentenceElementLabel(
+  sentenceId: string,
   sentenceStructureDiagramLayoutSentenceStructureElementNode: SentenceStructureDiagramLayoutSentenceStructureElementNode,
 ): SentenceStructureDiagramData["sentenceElementLabels"][number] {
   if (
@@ -315,7 +332,9 @@ function createSentenceElementLabel(
   ) {
     case "below-center":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceElementLabel.text,
         x: (firstLineRectangle.left + firstLineRectangle.right) / 2,
@@ -330,7 +349,9 @@ function createSentenceElementLabel(
       };
     case "below-left":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceElementLabel.text,
         x: firstLineRectangle.left,
@@ -345,7 +366,9 @@ function createSentenceElementLabel(
       };
     case "above-center":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceElementLabel.text,
         x: (firstLineRectangle.left + firstLineRectangle.right) / 2,
@@ -359,7 +382,9 @@ function createSentenceElementLabel(
       };
     case "above-left":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceElementLabel.text,
         x: firstLineRectangle.left,
@@ -379,6 +404,7 @@ function createSentenceElementLabel(
 }
 
 function createSentenceConstituentLabel(
+  sentenceId: string,
   sentenceStructureDiagramLayoutSentenceStructureElementNode: SentenceStructureDiagramLayoutSentenceStructureElementNode,
 ): SentenceStructureDiagramData["sentenceConstituentLabels"][number] {
   if (
@@ -398,7 +424,9 @@ function createSentenceConstituentLabel(
   ) {
     case "below-center":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceConstituentLabel.text,
         x: (firstLineRectangle.left + firstLineRectangle.right) / 2,
@@ -413,7 +441,9 @@ function createSentenceConstituentLabel(
       };
     case "below-left":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceConstituentLabel.text,
         x: firstLineRectangle.left,
@@ -428,7 +458,9 @@ function createSentenceConstituentLabel(
       };
     case "above-center":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceConstituentLabel.text,
         x: (firstLineRectangle.left + firstLineRectangle.right) / 2,
@@ -442,7 +474,9 @@ function createSentenceConstituentLabel(
       };
     case "above-left":
       return {
-        id: sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
+        sentenceId,
+        sentenceStructureElementId:
+          sentenceStructureDiagramLayoutSentenceStructureElementNode.id,
         text: sentenceStructureDiagramLayoutSentenceStructureElementNode
           .sentenceConstituentLabel.text,
         x: firstLineRectangle.left,
@@ -462,6 +496,7 @@ function createSentenceConstituentLabel(
 }
 
 function createArrow(
+  sentenceId: string,
   sentenceStructureDiagramLayoutModification: SentenceStructureDiagramLayoutModification,
   modifierSentenceStructureDiagramLayoutSentenceStructureElementNode: SentenceStructureDiagramLayoutSentenceStructureElementNode,
   modifiedSentenceStructureDiagramLayoutSentenceStructureElementNode: SentenceStructureDiagramLayoutSentenceStructureElementNode,
@@ -601,7 +636,8 @@ function createArrow(
   switch (sentenceStructureDiagramLayoutModification.arrow.type) {
     case "curved":
       return {
-        id: sentenceStructureDiagramLayoutModification.id,
+        sentenceId,
+        modificationId: sentenceStructureDiagramLayoutModification.id,
         pathCommands: [
           ...curvedArrowShaftPathCommands,
           ...arrowheadPathCommands,
@@ -614,7 +650,8 @@ function createArrow(
     case "orthogonal":
       if (fromEndpoint.y === toEndpoint.y) {
         return {
-          id: sentenceStructureDiagramLayoutModification.id,
+          sentenceId,
+          modificationId: sentenceStructureDiagramLayoutModification.id,
           pathCommands: [
             ...orthogonalArrowShaftPathCommands,
             ...arrowheadPathCommands,
@@ -626,7 +663,8 @@ function createArrow(
         };
       } else {
         return {
-          id: sentenceStructureDiagramLayoutModification.id,
+          sentenceId,
+          modificationId: sentenceStructureDiagramLayoutModification.id,
           pathCommands: [
             ...curvedArrowShaftPathCommands,
             ...arrowheadPathCommands,
@@ -644,6 +682,7 @@ function createArrow(
 }
 
 function createCoordinationGroupIndicator(
+  sentenceId: string,
   sentenceStructureDiagramLayoutCoordinationNode: SentenceStructureDiagramLayoutCoordinationNode,
   layoutSettings: SentenceStructureDiagramLayoutTree["layoutSettings"],
 ): SentenceStructureDiagramData["coordinationGroupIndicators"][number] {
@@ -708,7 +747,8 @@ function createCoordinationGroupIndicator(
         }
 
         return {
-          id: sentenceStructureDiagramLayoutCoordinationNode.id,
+          sentenceId,
+          coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
           linePaths: attachmentPointsByLine.map(
             (attachmentPointsOnLine, index) => {
               const attachmentPointY =
@@ -935,7 +975,8 @@ function createCoordinationGroupIndicator(
         switch (layoutSettings.coordination.groupIndicator.bracketType) {
           case "parenthesis":
             return {
-              id: sentenceStructureDiagramLayoutCoordinationNode.id,
+              sentenceId,
+              coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
               linePaths: [
                 {
                   pathCommands: [
@@ -1058,7 +1099,8 @@ function createCoordinationGroupIndicator(
             };
           case "angle-bracket":
             return {
-              id: sentenceStructureDiagramLayoutCoordinationNode.id,
+              sentenceId,
+              coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
               linePaths: [
                 {
                   pathCommands: [
@@ -1153,7 +1195,8 @@ function createCoordinationGroupIndicator(
             };
           case "curly-bracket":
             return {
-              id: sentenceStructureDiagramLayoutCoordinationNode.id,
+              sentenceId,
+              coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
               linePaths: [
                 {
                   pathCommands: [
@@ -1393,7 +1436,8 @@ function createCoordinationGroupIndicator(
             };
           case "square-bracket":
             return {
-              id: sentenceStructureDiagramLayoutCoordinationNode.id,
+              sentenceId,
+              coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
               linePaths: [
                 {
                   pathCommands: [
@@ -1525,7 +1569,8 @@ function createCoordinationGroupIndicator(
             }),
           );
         return {
-          id: sentenceStructureDiagramLayoutCoordinationNode.id,
+          sentenceId,
+          coordinationId: sentenceStructureDiagramLayoutCoordinationNode.id,
           linePaths: [
             {
               pathCommands: [
@@ -1620,25 +1665,25 @@ export function createSentenceStructureDiagramData(
     SentenceStructureDiagramLayoutSentenceStructureElementNode
   > = new Map();
 
-  function visit(node: SentenceStructureDiagramLayoutNode) {
+  function visit(sentenceId: string, node: SentenceStructureDiagramLayoutNode) {
     switch (node.type) {
       case "word":
-        words.push(createWord(node));
+        words.push(createWord(sentenceId, node));
         return;
       case "sentence-structure-element":
         if (node.rangeMarker) {
           switch (node.rangeMarker.type) {
             case "underline":
-              underlines.push(createUnderline(node));
+              underlines.push(createUnderline(sentenceId, node));
               break;
             case "bracket":
-              brackets.push(createBracket(node));
+              brackets.push(createBracket(sentenceId, node));
               break;
             case "box":
-              boxes.push(createBox(node));
+              boxes.push(createBox(sentenceId, node));
               break;
             case "highlight":
-              highlights.push(createHighlight(node));
+              highlights.push(createHighlight(sentenceId, node));
               break;
             default:
               node.rangeMarker satisfies never;
@@ -1646,10 +1691,14 @@ export function createSentenceStructureDiagramData(
           }
         }
         if (node.sentenceElementLabel) {
-          sentenceElementLabels.push(createSentenceElementLabel(node));
+          sentenceElementLabels.push(
+            createSentenceElementLabel(sentenceId, node),
+          );
         }
         if (node.sentenceConstituentLabel) {
-          sentenceConstituentLabels.push(createSentenceConstituentLabel(node));
+          sentenceConstituentLabels.push(
+            createSentenceConstituentLabel(sentenceId, node),
+          );
         }
         sentenceStructureElementIdToSentenceStructureDiagramLayoutSentenceStructureElementNodeMap.set(
           node.id,
@@ -1660,16 +1709,16 @@ export function createSentenceStructureDiagramData(
         if (node.rangeMarker) {
           switch (node.rangeMarker.type) {
             case "underline":
-              underlines.push(createUnderline(node));
+              underlines.push(createUnderline(sentenceId, node));
               break;
             case "bracket":
-              brackets.push(createBracket(node));
+              brackets.push(createBracket(sentenceId, node));
               break;
             case "box":
-              boxes.push(createBox(node));
+              boxes.push(createBox(sentenceId, node));
               break;
             case "highlight":
-              highlights.push(createHighlight(node));
+              highlights.push(createHighlight(sentenceId, node));
               break;
             default:
               node.rangeMarker satisfies never;
@@ -1684,6 +1733,7 @@ export function createSentenceStructureDiagramData(
         ) {
           coordinationGroupIndicators.push(
             createCoordinationGroupIndicator(
+              sentenceId,
               node,
               sentenceStructureDiagramLayoutTree.layoutSettings,
             ),
@@ -1698,12 +1748,15 @@ export function createSentenceStructureDiagramData(
     }
 
     for (const child of node.children) {
-      visit(child);
+      visit(sentenceId, child);
     }
   }
 
   for (const sentenceStructureDiagramLayoutSentenceTree of sentenceStructureDiagramLayoutTree.sentences) {
-    visit(sentenceStructureDiagramLayoutSentenceTree.root);
+    visit(
+      sentenceStructureDiagramLayoutSentenceTree.id,
+      sentenceStructureDiagramLayoutSentenceTree.root,
+    );
   }
 
   return {
@@ -1720,6 +1773,7 @@ export function createSentenceStructureDiagramData(
         sentenceStructureDiagramLayoutSentenceTree.modifications.map(
           (modification) =>
             createArrow(
+              sentenceStructureDiagramLayoutSentenceTree.id,
               modification,
               sentenceStructureElementIdToSentenceStructureDiagramLayoutSentenceStructureElementNodeMap.get(
                 modification.modifierSentenceStructureElementNodeId,

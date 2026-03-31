@@ -4,5 +4,6 @@ export type {
 } from "./diagram-data/types.js";
 export {
   createSentenceStructureDiagramData,
-  createSentenceStructureDiagramSvgString,
+  createSentenceStructureDiagramSVGString,
+  createSentenceStructureDocumentFromSentenceStructureDiagramSVGString,
 } from "./create.js";

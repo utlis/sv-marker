@@ -1,16 +1,17 @@
 {
-  "name": "@sentence-structure-diagram-app/sentence-structure-diagram",
+  "name": "@sv-marker/sentence-structure-diagram",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
+    "type-check": "tsc --noEmit",
     "clean": "rm -r dist"
   },
   "dependencies": {
-    "@sentence-structure-diagram-app/sentence-structure-data": "^0.1.0",
-    "@sentence-structure-diagram-app/sentence-structure-diagram-notation": "^0.1.0",
+    "@sv-marker/sentence-structure-diagram-notation": "^0.1.0",
+    "@sv-marker/sentence-structure-document": "^0.1.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {

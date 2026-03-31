@@ -1,0 +1,468 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/tokenize": {
+      "post": {
+        "summary": "Tokenize Document",
+        "operationId": "tokenize_document_tokenize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_tokenize_document_tokenize_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StanzaTokenizedDocument"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/parse": {
+      "post": {
+        "summary": "Parse Document",
+        "operationId": "parse_document_parse_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_parse_document_parse_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StanzaParsedDocument"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/parse/conllu": {
+      "post": {
+        "summary": "Parse Document As Conllu",
+        "operationId": "parse_document_as_conllu_parse_conllu_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_parse_document_as_conllu_parse_conllu_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "title": "Response Parse Document As Conllu Parse Conllu Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_parse_document_as_conllu_parse_conllu_post": {
+        "properties": { "text": { "type": "string", "title": "Text" } },
+        "type": "object",
+        "required": ["text"],
+        "title": "Body_parse_document_as_conllu_parse_conllu_post"
+      },
+      "Body_parse_document_parse_post": {
+        "properties": { "text": { "type": "string", "title": "Text" } },
+        "type": "object",
+        "required": ["text"],
+        "title": "Body_parse_document_parse_post"
+      },
+      "Body_tokenize_document_tokenize_post": {
+        "properties": { "text": { "type": "string", "title": "Text" } },
+        "type": "object",
+        "required": ["text"],
+        "title": "Body_tokenize_document_tokenize_post"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "StanzaConstituencyNode": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ADJP",
+                  "ADVP",
+                  "CONJP",
+                  "FRAG",
+                  "INTJ",
+                  "LST",
+                  "NAC",
+                  "NML",
+                  "NP",
+                  "PP",
+                  "PRN",
+                  "PRT",
+                  "QP",
+                  "ROOT",
+                  "RRC",
+                  "S",
+                  "SBAR",
+                  "SBARQ",
+                  "SINV",
+                  "SQ",
+                  "UCP",
+                  "VP",
+                  "WHADJP",
+                  "WHADVP",
+                  "WHNP",
+                  "WHPP",
+                  "X"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "$",
+                  "''",
+                  ",",
+                  "-LRB-",
+                  "-RRB-",
+                  ".",
+                  ":",
+                  "ADD",
+                  "AFX",
+                  "CC",
+                  "CD",
+                  "DT",
+                  "EX",
+                  "FW",
+                  "HYPH",
+                  "IN",
+                  "JJ",
+                  "JJR",
+                  "JJS",
+                  "LS",
+                  "MD",
+                  "NFP",
+                  "NN",
+                  "NNP",
+                  "NNPS",
+                  "NNS",
+                  "PDT",
+                  "POS",
+                  "PRP",
+                  "PRP$",
+                  "RB",
+                  "RBR",
+                  "RBS",
+                  "RP",
+                  "SYM",
+                  "TO",
+                  "UH",
+                  "VB",
+                  "VBD",
+                  "VBG",
+                  "VBN",
+                  "VBP",
+                  "VBZ",
+                  "WDT",
+                  "WP",
+                  "WP$",
+                  "WRB",
+                  "``"
+                ]
+              },
+              { "type": "string" }
+            ],
+            "title": "Label"
+          },
+          "children": {
+            "items": { "$ref": "#/components/schemas/StanzaConstituencyNode" },
+            "type": "array",
+            "title": "Children"
+          }
+        },
+        "type": "object",
+        "required": ["label", "children"],
+        "title": "StanzaConstituencyNode"
+      },
+      "StanzaParsedDocument": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "sentences": {
+            "items": { "$ref": "#/components/schemas/StanzaParsedSentence" },
+            "type": "array",
+            "title": "Sentences"
+          }
+        },
+        "type": "object",
+        "required": ["text", "sentences"],
+        "title": "StanzaParsedDocument"
+      },
+      "StanzaParsedSentence": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "tokens": {
+            "items": { "$ref": "#/components/schemas/StanzaParsedToken" },
+            "type": "array",
+            "title": "Tokens"
+          },
+          "constituency": {
+            "$ref": "#/components/schemas/StanzaConstituencyNode"
+          }
+        },
+        "type": "object",
+        "required": ["text", "tokens", "constituency"],
+        "title": "StanzaParsedSentence"
+      },
+      "StanzaParsedToken": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "words": {
+            "items": { "$ref": "#/components/schemas/StanzaParsedWord" },
+            "type": "array",
+            "title": "Words"
+          },
+          "spaces_after": { "type": "string", "title": "Spaces After" },
+          "spaces_before": { "type": "string", "title": "Spaces Before" }
+        },
+        "type": "object",
+        "required": ["text", "words", "spaces_after", "spaces_before"],
+        "title": "StanzaParsedToken"
+      },
+      "StanzaParsedWord": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "text": { "type": "string", "title": "Text" },
+          "lemma": { "type": "string", "title": "Lemma" },
+          "upos": {
+            "type": "string",
+            "enum": [
+              "ADJ",
+              "ADP",
+              "ADV",
+              "AUX",
+              "CCONJ",
+              "DET",
+              "INTJ",
+              "NOUN",
+              "NUM",
+              "PART",
+              "PRON",
+              "PROPN",
+              "PUNCT",
+              "SCONJ",
+              "SYM",
+              "VERB",
+              "X"
+            ],
+            "title": "Upos"
+          },
+          "xpos": { "type": "string", "title": "Xpos" },
+          "feats": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Feats"
+          },
+          "head": { "type": "integer", "title": "Head" },
+          "deprel": {
+            "type": "string",
+            "enum": [
+              "acl",
+              "acl:relcl",
+              "advcl",
+              "advcl:relcl",
+              "advmod",
+              "amod",
+              "appos",
+              "aux",
+              "aux:pass",
+              "case",
+              "cc",
+              "cc:preconj",
+              "ccomp",
+              "compound",
+              "compound:prt",
+              "conj",
+              "cop",
+              "csubj",
+              "csubj:outer",
+              "csubj:pass",
+              "dep",
+              "det",
+              "det:predet",
+              "discourse",
+              "dislocated",
+              "expl",
+              "fixed",
+              "flat",
+              "goeswith",
+              "iobj",
+              "list",
+              "mark",
+              "nmod",
+              "nmod:desc",
+              "nmod:poss",
+              "nmod:unmarked",
+              "nsubj",
+              "nsubj:outer",
+              "nsubj:pass",
+              "nummod",
+              "obj",
+              "obl",
+              "obl:agent",
+              "obl:npmod",
+              "obl:tmod",
+              "obl:unmarked",
+              "orphan",
+              "parataxis",
+              "punct",
+              "reparandum",
+              "root",
+              "vocative",
+              "xcomp"
+            ],
+            "title": "Deprel"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "text",
+          "lemma",
+          "upos",
+          "xpos",
+          "feats",
+          "head",
+          "deprel"
+        ],
+        "title": "StanzaParsedWord"
+      },
+      "StanzaTokenizedDocument": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "sentences": {
+            "items": { "$ref": "#/components/schemas/StanzaTokenizedSentence" },
+            "type": "array",
+            "title": "Sentences"
+          }
+        },
+        "type": "object",
+        "required": ["text", "sentences"],
+        "title": "StanzaTokenizedDocument"
+      },
+      "StanzaTokenizedSentence": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "tokens": {
+            "items": { "$ref": "#/components/schemas/StanzaTokenizedToken" },
+            "type": "array",
+            "title": "Tokens"
+          }
+        },
+        "type": "object",
+        "required": ["text", "tokens"],
+        "title": "StanzaTokenizedSentence"
+      },
+      "StanzaTokenizedToken": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "words": {
+            "items": { "$ref": "#/components/schemas/StanzaTokenizedWord" },
+            "type": "array",
+            "title": "Words"
+          },
+          "spaces_after": { "type": "string", "title": "Spaces After" },
+          "spaces_before": { "type": "string", "title": "Spaces Before" }
+        },
+        "type": "object",
+        "required": ["text", "words", "spaces_after", "spaces_before"],
+        "title": "StanzaTokenizedToken"
+      },
+      "StanzaTokenizedWord": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "text": { "type": "string", "title": "Text" }
+        },
+        "type": "object",
+        "required": ["id", "text"],
+        "title": "StanzaTokenizedWord"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" },
+          "input": { "title": "Input" },
+          "ctx": { "type": "object", "title": "Context" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

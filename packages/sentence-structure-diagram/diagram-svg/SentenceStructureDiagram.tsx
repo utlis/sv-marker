@@ -2,11 +2,8 @@ import { Fragment } from "react/jsx-runtime";
 import {
   sentenceStructureDocumentToXMLString,
   type SentenceStructureDocument,
-} from "@sentence-structure-diagram-app/sentence-structure-data";
-import {
-  sentenceStructureDiagramNotationToXMLString,
-  type SentenceStructureDiagramNotation,
-} from "@sentence-structure-diagram-app/sentence-structure-diagram-notation";
+} from "@sv-marker/sentence-structure-document";
+import { type SentenceStructureDiagramNotation } from "@sv-marker/sentence-structure-diagram-notation";
 import type {
   PathCommand,
   SentenceStructureDiagramData,
@@ -52,19 +49,31 @@ export default function SentenceStructureDiagram(
         dangerouslySetInnerHTML={{
           __html: `\
 ${sentenceStructureDocumentToXMLString(props.sentenceStructureDocument)}
-${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNotation)}
 `,
         }}
       />
+      {props.sentenceStructureDiagramData.highlights.map((highlight) =>
+        highlight.lineRectangles.map((lineRectangle, index) => (
+          <rect
+            key={`${highlight.sentenceStructureElementId}-${index}`}
+            x={lineRectangle.x}
+            y={lineRectangle.y}
+            width={lineRectangle.width}
+            height={lineRectangle.height}
+            fill={highlight.style.backgroundColor}
+          />
+        )),
+      )}
       {props.sentenceStructureDiagramData.words.map((word) => (
         <text
-          key={word.id}
+          key={word.wordId}
           x={word.rectangle.x}
           y={word.rectangle.y}
           dominantBaseline="text-before-edge"
           fontSize={word.style.fontSize}
           fontWeight={word.style.fontWeight}
           fill={word.style.textColor}
+          fontFamily="system-ui"
         >
           {word.text}
         </text>
@@ -72,7 +81,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
       {props.sentenceStructureDiagramData.underlines.map((underline) =>
         underline.lineSegments.map((lineSegment, index) => (
           <line
-            key={`${underline.id}-${index}`}
+            key={`${underline.sentenceStructureElementId}-${index}`}
             x1={lineSegment.x1}
             x2={lineSegment.x2}
             y1={lineSegment.y}
@@ -86,7 +95,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
         )),
       )}
       {props.sentenceStructureDiagramData.brackets.map((bracket) => (
-        <Fragment key={bracket.id}>
+        <Fragment key={bracket.sentenceStructureElementId}>
           <text
             x={bracket.openingBracket.x}
             y={bracket.openingBracket.y}
@@ -94,6 +103,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
             fontSize={bracket.style.fontSize}
             fontWeight={bracket.style.fontWeight}
             fill={bracket.style.textColor}
+            fontFamily="system-ui"
           >
             {bracket.openingBracket.text}
           </text>
@@ -104,6 +114,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
             fontSize={bracket.style.fontSize}
             fontWeight={bracket.style.fontWeight}
             fill={bracket.style.textColor}
+            fontFamily="system-ui"
           >
             {bracket.closingBracket.text}
           </text>
@@ -112,7 +123,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
       {props.sentenceStructureDiagramData.boxes.map((box) =>
         box.linePaths.map((linePath, index) => (
           <path
-            key={`${box.id}-${index}`}
+            key={`${box.sentenceStructureElementId}-${index}`}
             d={pathCommandsToSVGPathData(linePath.pathCommands)}
             stroke={box.style.strokeColor}
             {...(box.style.strokeStyle === "dashed" && {
@@ -123,22 +134,10 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
           />
         )),
       )}
-      {props.sentenceStructureDiagramData.highlights.map((highlight) =>
-        highlight.lineRectangles.map((lineRectangle, index) => (
-          <rect
-            key={`${highlight.id}-${index}`}
-            x={lineRectangle.x}
-            y={lineRectangle.y}
-            width={lineRectangle.width}
-            height={lineRectangle.height}
-            fill={highlight.style.backgroundColor}
-          />
-        )),
-      )}
       {props.sentenceStructureDiagramData.sentenceElementLabels.map(
         (sentenceElementLabel) => (
           <text
-            key={sentenceElementLabel.id}
+            key={sentenceElementLabel.sentenceStructureElementId}
             x={sentenceElementLabel.x}
             y={sentenceElementLabel.y}
             textAnchor={
@@ -152,6 +151,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
             fontSize={sentenceElementLabel.style.fontSize}
             fontWeight={sentenceElementLabel.style.fontWeight}
             fill={sentenceElementLabel.style.textColor}
+            fontFamily="system-ui"
           >
             {sentenceElementLabel.text}
           </text>
@@ -160,7 +160,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
       {props.sentenceStructureDiagramData.sentenceConstituentLabels.map(
         (sentenceConstituentLabel) => (
           <text
-            key={sentenceConstituentLabel.id}
+            key={sentenceConstituentLabel.sentenceStructureElementId}
             x={sentenceConstituentLabel.x}
             y={sentenceConstituentLabel.y}
             textAnchor={
@@ -174,6 +174,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
             fontSize={sentenceConstituentLabel.style.fontSize}
             fontWeight={sentenceConstituentLabel.style.fontWeight}
             fill={sentenceConstituentLabel.style.textColor}
+            fontFamily="system-ui"
           >
             {sentenceConstituentLabel.text}
           </text>
@@ -181,7 +182,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
       )}
       {props.sentenceStructureDiagramData.arrows.map((arrow) => (
         <path
-          key={arrow.id}
+          key={arrow.modificationId}
           d={pathCommandsToSVGPathData(arrow.pathCommands)}
           stroke={arrow.style.strokeColor}
           {...(arrow.style.strokeStyle === "dashed" && {
@@ -195,7 +196,7 @@ ${sentenceStructureDiagramNotationToXMLString(props.sentenceStructureDiagramNota
         (coordinationGroupIndicator) =>
           coordinationGroupIndicator.linePaths.map((linePath, index) => (
             <path
-              key={`${coordinationGroupIndicator.id}-${index}`}
+              key={`${coordinationGroupIndicator.coordinationId}-${index}`}
               d={pathCommandsToSVGPathData(linePath.pathCommands)}
               stroke={coordinationGroupIndicator.style.strokeColor}
               {...(coordinationGroupIndicator.style.strokeStyle ===

@@ -1,4 +1,4 @@
-import type { HexRGBColor } from "@sentence-structure-diagram-app/sentence-structure-diagram-notation";
+import type { HexRGBColor } from "@sv-marker/sentence-structure-diagram-notation";
 
 type TextStyle = {
   fontSize: number;
@@ -48,16 +48,20 @@ export type SentenceStructureDiagramData = {
     height: number;
   };
   words: {
-    id: string;
+    sentenceId: string;
+    wordId: string;
     text: string;
     rectangle: {
       x: number;
       y: number;
+      width: number;
+      height: number;
     };
     style: TextStyle;
   }[];
   underlines: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     lineSegments: {
       x1: number;
       x2: number;
@@ -66,7 +70,8 @@ export type SentenceStructureDiagramData = {
     style: StrokeStyle;
   }[];
   brackets: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     openingBracket: {
       text: string;
       x: number;
@@ -80,14 +85,16 @@ export type SentenceStructureDiagramData = {
     style: TextStyle;
   }[];
   boxes: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     linePaths: {
       pathCommands: PathCommand[];
     }[];
     style: StrokeStyle;
   }[];
   highlights: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     lineRectangles: {
       x: number;
       y: number;
@@ -97,7 +104,8 @@ export type SentenceStructureDiagramData = {
     style: BackgroundStyle;
   }[];
   sentenceElementLabels: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     text: string;
     x: number;
     y: number;
@@ -106,7 +114,8 @@ export type SentenceStructureDiagramData = {
     style: TextStyle;
   }[];
   sentenceConstituentLabels: {
-    id: string;
+    sentenceId: string;
+    sentenceStructureElementId: string;
     text: string;
     x: number;
     y: number;
@@ -115,12 +124,14 @@ export type SentenceStructureDiagramData = {
     style: TextStyle;
   }[];
   arrows: {
-    id: string;
+    sentenceId: string;
+    modificationId: string;
     pathCommands: PathCommand[];
     style: StrokeStyle;
   }[];
   coordinationGroupIndicators: {
-    id: string;
+    sentenceId: string;
+    coordinationId: string;
     linePaths: {
       pathCommands: PathCommand[];
     }[];

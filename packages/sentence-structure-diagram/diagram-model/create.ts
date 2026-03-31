@@ -10,11 +10,11 @@ import type {
   SentenceStructureDecoratedDocumentSentenceTree,
   SentenceStructureDecoratedDocumentWordNode,
   SentenceStructureElement,
-} from "@sentence-structure-diagram-app/sentence-structure-data";
+} from "@sv-marker/sentence-structure-document";
 import type {
   HexRGBColor,
   SentenceStructureDiagramNotation,
-} from "@sentence-structure-diagram-app/sentence-structure-diagram-notation";
+} from "@sv-marker/sentence-structure-diagram-notation";
 import type {
   BackgroundStyle,
   StrokeStyle,
@@ -80,22 +80,22 @@ function resolveRangeMarker(
               .coreSentenceElement;
           case "sentence-constituent":
             switch (range.sentenceStructureElement.type) {
-              case "phrase":
+              case "verbal-phrase":
                 switch (range.sentenceStructureElement.usage) {
                   case "nominal":
                     return sentenceStructureDiagramNotation
                       .sentenceStructureElementNotation.rangeMarking
-                      .sentenceConstituent.phrase.nominal;
+                      .sentenceConstituent.verbalPhrase.nominal;
                   case "adjectival":
                     return sentenceStructureDiagramNotation
                       .sentenceStructureElementNotation.rangeMarking
-                      .sentenceConstituent.phrase.adjectival;
+                      .sentenceConstituent.verbalPhrase.adjectival;
                   case "adverbial":
                     return sentenceStructureDiagramNotation
                       .sentenceStructureElementNotation.rangeMarking
-                      .sentenceConstituent.phrase.adverbial;
+                      .sentenceConstituent.verbalPhrase.adverbial;
                   default:
-                    range.sentenceStructureElement.usage satisfies never;
+                    range.sentenceStructureElement satisfies never;
                     throw new Error("Unreachable");
                 }
               case "clause":
@@ -113,13 +113,13 @@ function resolveRangeMarker(
                       .sentenceStructureElementNotation.rangeMarking
                       .sentenceConstituent.clause.adverbial;
                   default:
-                    range.sentenceStructureElement.usage satisfies never;
+                    range.sentenceStructureElement satisfies never;
                     throw new Error("Unreachable");
                 }
-              case "adverbial-phrase":
+              case "modifier-phrase":
                 return sentenceStructureDiagramNotation
                   .sentenceStructureElementNotation.rangeMarking
-                  .sentenceConstituent.adverbialPhrase;
+                  .sentenceConstituent.modifierPhrase;
               default:
                 range.sentenceStructureElement satisfies never;
                 throw new Error("Unreachable");
@@ -325,22 +325,22 @@ function resolveSentenceElementLabel(
           .sentenceElementLabeling.placement.coreSentenceElement;
       case "sentence-constituent":
         switch (sentenceStructureElement.type) {
-          case "phrase":
+          case "verbal-phrase":
             switch (sentenceStructureElement.usage) {
               case "nominal":
                 return sentenceStructureDiagramNotation
                   .sentenceStructureElementNotation.sentenceElementLabeling
-                  .placement.sentenceConstituent.phrase.nominal;
+                  .placement.sentenceConstituent.verbalPhrase.nominal;
               case "adjectival":
                 return sentenceStructureDiagramNotation
                   .sentenceStructureElementNotation.sentenceElementLabeling
-                  .placement.sentenceConstituent.phrase.adjectival;
+                  .placement.sentenceConstituent.verbalPhrase.adjectival;
               case "adverbial":
                 return sentenceStructureDiagramNotation
                   .sentenceStructureElementNotation.sentenceElementLabeling
-                  .placement.sentenceConstituent.phrase.adverbial;
+                  .placement.sentenceConstituent.verbalPhrase.adverbial;
               default:
-                sentenceStructureElement.usage satisfies never;
+                sentenceStructureElement satisfies never;
                 throw new Error("Unreachable");
             }
           case "clause":
@@ -358,13 +358,13 @@ function resolveSentenceElementLabel(
                   .sentenceStructureElementNotation.sentenceElementLabeling
                   .placement.sentenceConstituent.clause.adverbial;
               default:
-                sentenceStructureElement.usage satisfies never;
+                sentenceStructureElement satisfies never;
                 throw new Error("Unreachable");
             }
-          case "adverbial-phrase":
+          case "modifier-phrase":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceElementLabeling
-              .placement.sentenceConstituent.adverbialPhrase;
+              .placement.sentenceConstituent.modifierPhrase;
           default:
             sentenceStructureElement satisfies never;
             throw new Error("Unreachable");
@@ -404,22 +404,22 @@ function resolveSentenceConstituentLabel(
 
   const sentenceConstituentLabel = (() => {
     switch (sentenceStructureElement.type) {
-      case "phrase":
+      case "verbal-phrase":
         switch (sentenceStructureElement.usage) {
           case "nominal":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .labels.phrase.nominal;
+              .labels.verbalPhrase.nominal;
           case "adjectival":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .labels.phrase.adjectival;
+              .labels.verbalPhrase.adjectival;
           case "adverbial":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .labels.phrase.adverbial;
+              .labels.verbalPhrase.adverbial;
           default:
-            sentenceStructureElement.usage satisfies never;
+            sentenceStructureElement satisfies never;
             throw new Error("Unreachable");
         }
       case "clause":
@@ -437,12 +437,12 @@ function resolveSentenceConstituentLabel(
               .sentenceStructureElementNotation.sentenceConstituentLabeling
               .labels.clause.adverbial;
           default:
-            sentenceStructureElement.usage satisfies never;
+            sentenceStructureElement satisfies never;
             throw new Error("Unreachable");
         }
-      case "adverbial-phrase":
+      case "modifier-phrase":
         return sentenceStructureDiagramNotation.sentenceStructureElementNotation
-          .sentenceConstituentLabeling.labels.adverbialPhrase;
+          .sentenceConstituentLabeling.labels.modifierPhrase;
       default:
         sentenceStructureElement satisfies never;
         throw new Error("Unreachable");
@@ -455,22 +455,22 @@ function resolveSentenceConstituentLabel(
 
   const sentenceConstituentPlacement = (() => {
     switch (sentenceStructureElement.type) {
-      case "phrase":
+      case "verbal-phrase":
         switch (sentenceStructureElement.usage) {
           case "nominal":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .placement.phrase.nominal;
+              .placement.verbalPhrase.nominal;
           case "adjectival":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .placement.phrase.adjectival;
+              .placement.verbalPhrase.adjectival;
           case "adverbial":
             return sentenceStructureDiagramNotation
               .sentenceStructureElementNotation.sentenceConstituentLabeling
-              .placement.phrase.adverbial;
+              .placement.verbalPhrase.adverbial;
           default:
-            sentenceStructureElement.usage satisfies never;
+            sentenceStructureElement satisfies never;
             throw new Error("Unreachable");
         }
       case "clause":
@@ -488,12 +488,12 @@ function resolveSentenceConstituentLabel(
               .sentenceStructureElementNotation.sentenceConstituentLabeling
               .placement.clause.adverbial;
           default:
-            sentenceStructureElement.usage satisfies never;
+            sentenceStructureElement satisfies never;
             throw new Error("Unreachable");
         }
-      case "adverbial-phrase":
+      case "modifier-phrase":
         return sentenceStructureDiagramNotation.sentenceStructureElementNotation
-          .sentenceConstituentLabeling.placement.adverbialPhrase;
+          .sentenceConstituentLabeling.placement.modifierPhrase;
       default:
         sentenceStructureElement satisfies never;
         throw new Error("Unreachable");

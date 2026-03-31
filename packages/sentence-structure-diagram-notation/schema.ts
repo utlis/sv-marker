@@ -65,6 +65,7 @@ export const RangeMarkerSchema = z.union([
     type: z.literal("none"),
   }),
 ]);
+export type RangeMarker = z.infer<typeof RangeMarkerSchema>;
 
 export const labelPlacementOptions = [
   "below-center",
@@ -77,7 +78,7 @@ export const SentenceStructureElementNotationSchema = z.object({
   rangeMarking: z.object({
     coreSentenceElement: RangeMarkerSchema,
     sentenceConstituent: z.object({
-      phrase: z.object({
+      verbalPhrase: z.object({
         nominal: RangeMarkerSchema,
         adjectival: RangeMarkerSchema,
         adverbial: RangeMarkerSchema,
@@ -87,7 +88,7 @@ export const SentenceStructureElementNotationSchema = z.object({
         adjectival: RangeMarkerSchema,
         adverbial: RangeMarkerSchema,
       }),
-      adverbialPhrase: RangeMarkerSchema,
+      modifierPhrase: RangeMarkerSchema,
     }),
     modificationElement: RangeMarkerSchema,
   }),
@@ -102,7 +103,7 @@ export const SentenceStructureElementNotationSchema = z.object({
     placement: z.object({
       coreSentenceElement: z.literal(labelPlacementOptions),
       sentenceConstituent: z.object({
-        phrase: z.object({
+        verbalPhrase: z.object({
           nominal: z.literal(labelPlacementOptions),
           adjectival: z.literal(labelPlacementOptions),
           adverbial: z.literal(labelPlacementOptions),
@@ -112,7 +113,7 @@ export const SentenceStructureElementNotationSchema = z.object({
           adjectival: z.literal(labelPlacementOptions),
           adverbial: z.literal(labelPlacementOptions),
         }),
-        adverbialPhrase: z.literal(labelPlacementOptions),
+        modifierPhrase: z.literal(labelPlacementOptions),
       }),
     }),
     color: z.literal(colorOptions),
@@ -123,7 +124,7 @@ export const SentenceStructureElementNotationSchema = z.object({
   }),
   sentenceConstituentLabeling: z.object({
     labels: z.object({
-      phrase: z.object({
+      verbalPhrase: z.object({
         nominal: z.string(),
         adjectival: z.string(),
         adverbial: z.string(),
@@ -133,10 +134,10 @@ export const SentenceStructureElementNotationSchema = z.object({
         adjectival: z.string(),
         adverbial: z.string(),
       }),
-      adverbialPhrase: z.string(),
+      modifierPhrase: z.string(),
     }),
     placement: z.object({
-      phrase: z.object({
+      verbalPhrase: z.object({
         nominal: z.literal(labelPlacementOptions),
         adjectival: z.literal(labelPlacementOptions),
         adverbial: z.literal(labelPlacementOptions),
@@ -146,7 +147,7 @@ export const SentenceStructureElementNotationSchema = z.object({
         adjectival: z.literal(labelPlacementOptions),
         adverbial: z.literal(labelPlacementOptions),
       }),
-      adverbialPhrase: z.literal(labelPlacementOptions),
+      modifierPhrase: z.literal(labelPlacementOptions),
     }),
     color: z.literal(colorOptions),
   }),

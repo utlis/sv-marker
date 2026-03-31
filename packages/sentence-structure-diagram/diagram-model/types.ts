@@ -1,4 +1,4 @@
-import type { HexRGBColor } from "@sentence-structure-diagram-app/sentence-structure-diagram-notation";
+import type { HexRGBColor } from "@sv-marker/sentence-structure-diagram-notation";
 
 export type TextStyle = {
   fontSize: number;

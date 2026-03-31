@@ -1,0 +1,27 @@
+{
+  "name": "@sv-marker/evals",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "stanza-server:generate": "openapi-typescript ../openapi/stanza-server/openapi.json -o generated/stanza-server/schema.d.ts",
+    "build": "npm run stanza-server:generate && tsc",
+    "type-check": "npm run stanza-server:generate && tsc --noEmit",
+    "clean": "rm -r dist"
+  },
+  "dependencies": {
+    "@google/genai": "^1.50.1",
+    "@sv-marker/sentence-structure-diagram": "^0.1.0",
+    "@sv-marker/sentence-structure-diagram-notation": "^0.1.0",
+    "@sv-marker/sentence-structure-document": "^0.1.0",
+    "@sv-marker/sentence-structure-document-from-stanza": "^0.1.0",
+    "openai": "^6.35.0",
+    "openapi-fetch": "^0.17.0",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "openapi-typescript": "^7.13.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

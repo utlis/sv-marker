@@ -217,7 +217,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
   "range-marking": z.object({
     "core-sentence-element": XMLRangeMarkerSchema,
     "sentence-constituent": z.object({
-      phrase: z.object({
+      "verbal-phrase": z.object({
         nominal: XMLRangeMarkerSchema,
         adjectival: XMLRangeMarkerSchema,
         adverbial: XMLRangeMarkerSchema,
@@ -227,7 +227,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
         adjectival: XMLRangeMarkerSchema,
         adverbial: XMLRangeMarkerSchema,
       }),
-      "adverbial-phrase": XMLRangeMarkerSchema,
+      "modifier-phrase": XMLRangeMarkerSchema,
     }),
     "modification-element": XMLRangeMarkerSchema,
   }),
@@ -242,7 +242,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
     placement: z.object({
       "core-sentence-element": z.literal(labelPlacementOptions),
       "sentence-constituent": z.object({
-        phrase: z.object({
+        "verbal-phrase": z.object({
           nominal: z.literal(labelPlacementOptions),
           adjectival: z.literal(labelPlacementOptions),
           adverbial: z.literal(labelPlacementOptions),
@@ -252,7 +252,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
           adjectival: z.literal(labelPlacementOptions),
           adverbial: z.literal(labelPlacementOptions),
         }),
-        "adverbial-phrase": z.literal(labelPlacementOptions),
+        "modifier-phrase": z.literal(labelPlacementOptions),
       }),
     }),
     "@_color": z.literal(colorOptions),
@@ -263,7 +263,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
   }),
   "sentence-constituent-labeling": z.object({
     labels: z.object({
-      phrase: z.object({
+      "verbal-phrase": z.object({
         nominal: z.string(),
         adjectival: z.string(),
         adverbial: z.string(),
@@ -273,10 +273,10 @@ const XMLSentenceStructureElementNotationSchema = z.object({
         adjectival: z.string(),
         adverbial: z.string(),
       }),
-      "adverbial-phrase": z.string(),
+      "modifier-phrase": z.string(),
     }),
     placement: z.object({
-      phrase: z.object({
+      "verbal-phrase": z.object({
         nominal: z.literal(labelPlacementOptions),
         adjectival: z.literal(labelPlacementOptions),
         adverbial: z.literal(labelPlacementOptions),
@@ -286,7 +286,7 @@ const XMLSentenceStructureElementNotationSchema = z.object({
         adjectival: z.literal(labelPlacementOptions),
         adverbial: z.literal(labelPlacementOptions),
       }),
-      "adverbial-phrase": z.literal(labelPlacementOptions),
+      "modifier-phrase": z.literal(labelPlacementOptions),
     }),
     "@_color": z.literal(colorOptions),
   }),
@@ -305,21 +305,21 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
             ],
           ),
           sentenceConstituent: {
-            phrase: {
+            verbalPhrase: {
               nominal: xmlRangeMarkerToRangeMarker.decode(
                 xmlSentenceStructureElementNotation["range-marking"][
                   "sentence-constituent"
-                ].phrase.nominal,
+                ]["verbal-phrase"].nominal,
               ),
               adjectival: xmlRangeMarkerToRangeMarker.decode(
                 xmlSentenceStructureElementNotation["range-marking"][
                   "sentence-constituent"
-                ].phrase.adjectival,
+                ]["verbal-phrase"].adjectival,
               ),
               adverbial: xmlRangeMarkerToRangeMarker.decode(
                 xmlSentenceStructureElementNotation["range-marking"][
                   "sentence-constituent"
-                ].phrase.adverbial,
+                ]["verbal-phrase"].adverbial,
               ),
             },
             clause: {
@@ -339,10 +339,10 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                 ].clause.adverbial,
               ),
             },
-            adverbialPhrase: xmlRangeMarkerToRangeMarker.decode(
+            modifierPhrase: xmlRangeMarkerToRangeMarker.decode(
               xmlSentenceStructureElementNotation["range-marking"][
                 "sentence-constituent"
-              ]["adverbial-phrase"],
+              ]["modifier-phrase"],
             ),
           },
           modificationElement: xmlRangeMarkerToRangeMarker.decode(
@@ -369,19 +369,21 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
               xmlSentenceStructureElementNotation["sentence-element-labeling"]
                 .placement["core-sentence-element"],
             sentenceConstituent: {
-              phrase: {
+              verbalPhrase: {
                 nominal:
                   xmlSentenceStructureElementNotation[
                     "sentence-element-labeling"
-                  ].placement["sentence-constituent"].phrase.nominal,
+                  ].placement["sentence-constituent"]["verbal-phrase"].nominal,
                 adjectival:
                   xmlSentenceStructureElementNotation[
                     "sentence-element-labeling"
-                  ].placement["sentence-constituent"].phrase.adjectival,
+                  ].placement["sentence-constituent"]["verbal-phrase"]
+                    .adjectival,
                 adverbial:
                   xmlSentenceStructureElementNotation[
                     "sentence-element-labeling"
-                  ].placement["sentence-constituent"].phrase.adverbial,
+                  ].placement["sentence-constituent"]["verbal-phrase"]
+                    .adverbial,
               },
               clause: {
                 nominal:
@@ -397,9 +399,9 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                     "sentence-element-labeling"
                   ].placement["sentence-constituent"].clause.adverbial,
               },
-              adverbialPhrase:
+              modifierPhrase:
                 xmlSentenceStructureElementNotation["sentence-element-labeling"]
-                  .placement["sentence-constituent"]["adverbial-phrase"],
+                  .placement["sentence-constituent"]["modifier-phrase"],
             },
           },
           color:
@@ -419,19 +421,19 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
         },
         sentenceConstituentLabeling: {
           labels: {
-            phrase: {
+            verbalPhrase: {
               nominal:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].labels.phrase.nominal,
+                ].labels["verbal-phrase"].nominal,
               adjectival:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].labels.phrase.adjectival,
+                ].labels["verbal-phrase"].adjectival,
               adverbial:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].labels.phrase.adverbial,
+                ].labels["verbal-phrase"].adverbial,
             },
             clause: {
               nominal:
@@ -447,25 +449,25 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                   "sentence-constituent-labeling"
                 ].labels.clause.adverbial,
             },
-            adverbialPhrase:
+            modifierPhrase:
               xmlSentenceStructureElementNotation[
                 "sentence-constituent-labeling"
-              ].labels["adverbial-phrase"],
+              ].labels["modifier-phrase"],
           },
           placement: {
-            phrase: {
+            verbalPhrase: {
               nominal:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].placement.phrase.nominal,
+                ].placement["verbal-phrase"].nominal,
               adjectival:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].placement.phrase.adjectival,
+                ].placement["verbal-phrase"].adjectival,
               adverbial:
                 xmlSentenceStructureElementNotation[
                   "sentence-constituent-labeling"
-                ].placement.phrase.adverbial,
+                ].placement["verbal-phrase"].adverbial,
             },
             clause: {
               nominal:
@@ -481,10 +483,10 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                   "sentence-constituent-labeling"
                 ].placement.clause.adverbial,
             },
-            adverbialPhrase:
+            modifierPhrase:
               xmlSentenceStructureElementNotation[
                 "sentence-constituent-labeling"
-              ].placement["adverbial-phrase"],
+              ].placement["modifier-phrase"],
           },
           color:
             xmlSentenceStructureElementNotation[
@@ -498,18 +500,18 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
             sentenceStructureElementNotation.rangeMarking.coreSentenceElement,
           ),
           "sentence-constituent": {
-            phrase: {
+            "verbal-phrase": {
               nominal: xmlRangeMarkerToRangeMarker.encode(
                 sentenceStructureElementNotation.rangeMarking
-                  .sentenceConstituent.phrase.nominal,
+                  .sentenceConstituent.verbalPhrase.nominal,
               ),
               adjectival: xmlRangeMarkerToRangeMarker.encode(
                 sentenceStructureElementNotation.rangeMarking
-                  .sentenceConstituent.phrase.adjectival,
+                  .sentenceConstituent.verbalPhrase.adjectival,
               ),
               adverbial: xmlRangeMarkerToRangeMarker.encode(
                 sentenceStructureElementNotation.rangeMarking
-                  .sentenceConstituent.phrase.adverbial,
+                  .sentenceConstituent.verbalPhrase.adverbial,
               ),
             },
             clause: {
@@ -526,9 +528,9 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                   .sentenceConstituent.clause.adverbial,
               ),
             },
-            "adverbial-phrase": xmlRangeMarkerToRangeMarker.encode(
+            "modifier-phrase": xmlRangeMarkerToRangeMarker.encode(
               sentenceStructureElementNotation.rangeMarking.sentenceConstituent
-                .adverbialPhrase,
+                .modifierPhrase,
             ),
           },
           "modification-element": xmlRangeMarkerToRangeMarker.encode(
@@ -553,16 +555,16 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
               sentenceStructureElementNotation.sentenceElementLabeling.placement
                 .coreSentenceElement,
             "sentence-constituent": {
-              phrase: {
+              "verbal-phrase": {
                 nominal:
                   sentenceStructureElementNotation.sentenceElementLabeling
-                    .placement.sentenceConstituent.phrase.nominal,
+                    .placement.sentenceConstituent.verbalPhrase.nominal,
                 adjectival:
                   sentenceStructureElementNotation.sentenceElementLabeling
-                    .placement.sentenceConstituent.phrase.adjectival,
+                    .placement.sentenceConstituent.verbalPhrase.adjectival,
                 adverbial:
                   sentenceStructureElementNotation.sentenceElementLabeling
-                    .placement.sentenceConstituent.phrase.adverbial,
+                    .placement.sentenceConstituent.verbalPhrase.adverbial,
               },
               clause: {
                 nominal:
@@ -575,9 +577,9 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                   sentenceStructureElementNotation.sentenceElementLabeling
                     .placement.sentenceConstituent.clause.adverbial,
               },
-              "adverbial-phrase":
+              "modifier-phrase":
                 sentenceStructureElementNotation.sentenceElementLabeling
-                  .placement.sentenceConstituent.adverbialPhrase,
+                  .placement.sentenceConstituent.modifierPhrase,
             },
           },
           "@_color":
@@ -593,16 +595,16 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
         },
         "sentence-constituent-labeling": {
           labels: {
-            phrase: {
+            "verbal-phrase": {
               nominal:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .labels.phrase.nominal,
+                  .labels.verbalPhrase.nominal,
               adjectival:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .labels.phrase.adjectival,
+                  .labels.verbalPhrase.adjectival,
               adverbial:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .labels.phrase.adverbial,
+                  .labels.verbalPhrase.adverbial,
             },
             clause: {
               nominal:
@@ -615,21 +617,21 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                 sentenceStructureElementNotation.sentenceConstituentLabeling
                   .labels.clause.adverbial,
             },
-            "adverbial-phrase":
+            "modifier-phrase":
               sentenceStructureElementNotation.sentenceConstituentLabeling
-                .labels.adverbialPhrase,
+                .labels.modifierPhrase,
           },
           placement: {
-            phrase: {
+            "verbal-phrase": {
               nominal:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .placement.phrase.nominal,
+                  .placement.verbalPhrase.nominal,
               adjectival:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .placement.phrase.adjectival,
+                  .placement.verbalPhrase.adjectival,
               adverbial:
                 sentenceStructureElementNotation.sentenceConstituentLabeling
-                  .placement.phrase.adverbial,
+                  .placement.verbalPhrase.adverbial,
             },
             clause: {
               nominal:
@@ -642,9 +644,9 @@ const xmlSentenceStructureElementNotationToSentenceStructureElementNotation =
                 sentenceStructureElementNotation.sentenceConstituentLabeling
                   .placement.clause.adverbial,
             },
-            "adverbial-phrase":
+            "modifier-phrase":
               sentenceStructureElementNotation.sentenceConstituentLabeling
-                .placement.adverbialPhrase,
+                .placement.modifierPhrase,
           },
           "@_color":
             sentenceStructureElementNotation.sentenceConstituentLabeling.color,

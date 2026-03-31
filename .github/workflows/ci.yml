@@ -25,7 +25,7 @@ jobs:
         shell: bash
 
       - name: Prettier
-        run: npm run format:check
+        run: make format/check
         shell: bash
 
   build:
@@ -46,5 +46,47 @@ jobs:
         shell: bash
 
       - name: Build
-        run: npm run build
+        run: make build
+        shell: bash
+
+  type-check:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install Packages
+        run: npm ci
+        shell: bash
+
+      - name: Type Check
+        run: make type-check
+        shell: bash
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install Packages
+        run: npm ci
+        shell: bash
+
+      - name: Lint
+        run: make lint
         shell: bash

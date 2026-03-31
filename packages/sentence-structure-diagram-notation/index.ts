@@ -1,6 +1,11 @@
-export type {
-  HexRGBColor,
-  SentenceStructureDiagramNotation,
+export {
+  lineStyleOptions,
+  colorOptions,
+  bracketTypeOptions,
+  labelPlacementOptions,
+  type HexRGBColor,
+  type RangeMarker,
+  type SentenceStructureDiagramNotation,
 } from "./schema.js";
 export { presets } from "./presets/index.js";
 export {
