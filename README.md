@@ -2,6 +2,7 @@
 
 <!-- [![Release version badge](https://img.shields.io/github/v/release/utlis/sv-marker.svg?logo=github)](https://github.com/utlis/sv-marker/releases) -->
 <!-- ![license: MIT](https://img.shields.io/badge/license-MIT-informational.svg) -->
+
 [![CI](https://github.com/utlis/sv-marker/actions/workflows/ci.yml/badge.svg)](https://github.com/utlis/sv-marker/actions/workflows/ci.yml)
 [![Deploy](https://github.com/utlis/sv-marker/actions/workflows/deploy.yml/badge.svg)](https://github.com/utlis/sv-marker/actions/workflows/deploy.yml)
 [![React](https://img.shields.io/badge/React-555.svg?logo=react)](https://github.com/facebook/react)
