@@ -1,26 +1,21 @@
 {
-  "name": "sentence-structure-diagram-app",
+  "name": "sv-marker",
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build:packages": "npm run build --workspace=packages/sentence-structure-data && npm run build --workspace=packages/sentence-structure-tree && npm run build --workspace=packages/sentence-structure-diagram-configurations && npm run build --workspace=packages/sentence-structure-diagram-tree && npm run build --workspace=packages/sentence-structure-diagram-data && npm run build --workspace=packages/sentence-structure-diagram-svg",
-    "build": "npm run build:packages && npm run build --workspace=packages/evaluation && npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "build:packages": "npm run build --workspace=packages/sentence-structure-document && npm run build --workspace=packages/sentence-structure-diagram-notation && npm run build --workspace=packages/sentence-structure-diagram && npm run build --workspace=packages/sentence-structure-document-from-stanza",
+    "build": "npm run build:packages && npm run build --workspace=apps/backend && npm run build --workspace=apps/frontend && npm run build --workspace=evals",
+    "lint": "npm run lint --workspaces --if-present",
     "clean": "npm run clean --workspaces"
   },
   "devDependencies": {
     "prettier": "^3.7.4"
   },
   "workspaces": [
-    "packages/backend",
-    "packages/frontend",
-    "packages/sentence-structure-data",
-    "packages/sentence-structure-diagram-data",
-    "packages/sentence-structure-diagram-svg",
-    "packages/evaluation",
-    "packages/sentence-structure-diagram-configurations",
-    "packages/sentence-structure-tree",
-    "packages/sentence-structure-diagram-tree"
+    "packages/*",
+    "apps/*",
+    "evals"
   ]
 }

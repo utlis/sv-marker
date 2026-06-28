@@ -1,13 +1,15 @@
 services:
   - type: web
     runtime: node
-    name: sentence-structure-diagram-app-backend
+    name: sv-marker-backend
     region: singapore
     plan: free
     buildCommand: npm ci && npm run build
-    startCommand: cd packages/backend && npm start
+    startCommand: cd apps/backend && npm start
     envVars:
       - key: WEB_ORIGIN
-        value: https://chvmvd.github.io
+        value: https://utlis.github.io
+      - key: STANZA_SERVER_ORIGIN
+        value: https://sv-marker-stanza-server.onrender.com
       - key: GEMINI_API_KEY
         sync: false
