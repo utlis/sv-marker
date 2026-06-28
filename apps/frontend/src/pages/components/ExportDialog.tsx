@@ -199,7 +199,7 @@ export default function ExportDialog({ isOpen, onClose }: ExportDialogProps) {
                     },
                     {
                       presetName: "custom",
-                      label: "自分で設定する",
+                      label: "自分で設定する（ベータ）",
                     },
                   ] satisfies {
                     presetName: keyof typeof presets | "custom";
