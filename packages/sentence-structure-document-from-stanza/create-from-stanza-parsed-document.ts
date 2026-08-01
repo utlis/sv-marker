@@ -241,6 +241,7 @@ function getCoreNominalSpan(
             );
       if (
         firstAdnominalClauseStartWordIndex === null ||
+        firstAdnominalClauseStartWordIndex <= coreNominalSpan.startWordIndex ||
         coreNominalSpan.endWordIndex < firstAdnominalClauseStartWordIndex
       ) {
         return coreNominalSpan.endWordIndex;
