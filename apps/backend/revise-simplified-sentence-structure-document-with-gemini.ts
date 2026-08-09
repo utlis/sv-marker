@@ -11,7 +11,7 @@ import {
   SentenceStructureAnnotationsOutputSchema,
 } from "./sentence-structure-annotations-output-schema.js";
 
-const ai = new GoogleGenAI({ vertexai: true });
+const ai = new GoogleGenAI({});
 
 export async function reviseSimplifiedSentenceStructureDocumentWithGemini(
   userRevisionInstruction: string,
@@ -24,7 +24,7 @@ export async function reviseSimplifiedSentenceStructureDocumentWithGemini(
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3.5-flash-lite",
       contents: prompt.userInput,
       config: {
         systemInstruction: prompt.systemInstruction,

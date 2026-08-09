@@ -1,7 +1,5 @@
 from fastapi import Body, Request, FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-import os
 from typing import Annotated, Literal
 from pydantic import BaseModel
 import stanza
@@ -9,33 +7,16 @@ import stanza
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    stanza.download(
-        "en",
-        processors="tokenize,mwt,pos,lemma,depparse,constituency",
-        package="default_accurate",
-    )
-
     app.state.nlp = stanza.Pipeline(
         "en",
         processors="tokenize,mwt,pos,lemma,depparse,constituency",
         package="default_accurate",
-        download_method=None,
     )
 
     yield
 
 
 app = FastAPI(lifespan=lifespan)
-
-origins = [
-    os.getenv("WEB_ORIGIN"),
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_methods=["*"],
-)
 
 
 class StanzaTokenizedWord(BaseModel):
