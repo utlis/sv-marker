@@ -16,8 +16,52 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Build
+  build-and-push-stanza-server:
+    name: Build and Push Stanza Server Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Log in to Azure Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ vars.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push Stanza Server
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/stanza-server/Dockerfile
+          push: true
+          tags: ${{ vars.ACR_LOGIN_SERVER }}/stanza-server:${{ github.sha }}
+
+  build-and-push-backend:
+    name: Build and Push Backend Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Log in to Azure Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ vars.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push Backend
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/backend/Dockerfile
+          push: true
+          tags: ${{ vars.ACR_LOGIN_SERVER }}/backend:${{ github.sha }}
+
+  build-frontend:
+    name: Build Frontend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -45,13 +89,13 @@ jobs:
         with:
           path: ./apps/frontend/dist
 
-  deploy:
-    name: Deploy
+  deploy-frontend:
+    name: Deploy Frontend
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-frontend
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
