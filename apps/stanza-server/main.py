@@ -10,7 +10,7 @@ async def lifespan(app: FastAPI):
     app.state.nlp = stanza.Pipeline(
         "en",
         processors="tokenize,mwt,pos,lemma,depparse,constituency",
-        package="default_accurate",
+        package="default",
     )
 
     yield
