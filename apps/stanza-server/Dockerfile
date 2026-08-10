@@ -6,7 +6,7 @@ WORKDIR /app
 COPY apps/stanza-server/pyproject.toml apps/stanza-server/uv.lock .
 RUN uv sync --frozen
 
-RUN uv run python -c 'import stanza; stanza.Pipeline("en", processors="tokenize,mwt,pos,lemma,depparse,constituency", package="default_accurate")'
+RUN uv run python -c 'import stanza; stanza.Pipeline("en", processors="tokenize,mwt,pos,lemma,depparse,constituency", package="default")'
 
 COPY apps/stanza-server .
 
