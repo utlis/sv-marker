@@ -1,5 +1,3 @@
-import createClient from "openapi-fetch";
-import type { paths } from "./generated/stanza-server/schema.js";
 import {
   createSentenceStructureDocumentFromSimplifiedSentenceStructureDocument,
   sentenceStructureDocumentToText,
@@ -10,11 +8,12 @@ import {
   createSentenceStructureDocumentFromStanzaParsedDocument,
   createSentenceStructureDocumentFromStanzaTokenizedDocument,
 } from "@sv-marker/sentence-structure-document-from-stanza";
+import {
+  parseDocument,
+  parseDocumentAsConllu,
+  tokenizeDocument,
+} from "./generated/stanza-server/client.js";
 import { sentenceStructureDocumentToSentenceStructureAnnotationsOutputJSONString } from "./sentence-structure-annotations-output-schema.js";
-
-const client = createClient<paths>({
-  baseUrl: process.env.STANZA_SERVER_ORIGIN ?? "",
-});
 
 export type Prompt = {
   systemInstruction: string;
@@ -29,47 +28,37 @@ export type GeneratePromptOptions = {
 async function getSentenceStructureDocumentFromStanzaTokenization(
   text: string,
 ): Promise<SentenceStructureDocument> {
-  const { data } = await client.POST("/tokenize", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
+  const response = await tokenizeDocument({ text });
+  if (response.status !== 200) {
     throw new Error(
-      "Failed to generate sentence structure document from Stanza",
+      "Failed to generate sentence structure document by Stanza.",
     );
   }
-  return createSentenceStructureDocumentFromStanzaTokenizedDocument(data);
+  return createSentenceStructureDocumentFromStanzaTokenizedDocument(
+    response.data,
+  );
 }
 
 async function getSentenceStructureAnnotationsOutputJSONStringFromStanza(
   text: string,
 ): Promise<string> {
-  const { data } = await client.POST("/parse", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
+  const response = await parseDocument({ text });
+  if (response.status !== 200) {
     throw new Error(
-      "Failed to generate sentence structure annotations output from Stanza",
+      "Failed to generate sentence structure annotations output by Stanza.",
     );
   }
   return sentenceStructureDocumentToSentenceStructureAnnotationsOutputJSONString(
-    createSentenceStructureDocumentFromStanzaParsedDocument(data),
+    createSentenceStructureDocumentFromStanzaParsedDocument(response.data),
   );
 }
 
 async function getStanzaParseResult(text: string): Promise<string> {
-  const { data } = await client.POST("/parse/conllu", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
-    throw new Error("Failed to generate Stanza CoNLL");
+  const response = await parseDocumentAsConllu({ text });
+  if (response.status !== 200) {
+    throw new Error("Failed to generate Stanza CoNLL.");
   }
-  return data;
+  return response.data;
 }
 
 async function generateExamplePrompt(

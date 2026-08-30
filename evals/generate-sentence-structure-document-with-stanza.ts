@@ -1,18 +1,16 @@
-import createClient from "openapi-fetch";
-import type { paths } from "./generated/stanza-server/schema.js";
 import type { SentenceStructureDocument } from "@sv-marker/sentence-structure-document";
 import { createSentenceStructureDocumentFromStanzaParsedDocument } from "@sv-marker/sentence-structure-document-from-stanza";
-
-const client = createClient<paths>({
-  baseUrl: process.env.STANZA_SERVER_ORIGIN ?? "",
-});
+import {
+  parseDocument,
+  type StanzaParsedDocument,
+} from "./generated/stanza-server/client.js";
 
 export async function generateSentenceStructureDocumentWithStanza(
   text: string,
 ): Promise<
   {
     processingTime: number;
-    rawResponse: paths["/parse"]["post"]["responses"]["200"]["content"]["application/json"];
+    rawResponse: StanzaParsedDocument;
   } & (
     | {
         success: true;
@@ -25,30 +23,26 @@ export async function generateSentenceStructureDocumentWithStanza(
   )
 > {
   const startTime = Date.now();
-  const { data } = await client.POST("/parse", {
-    body: {
-      text,
-    },
-  });
+  const response = await parseDocument({ text });
   const endTime = Date.now();
-  if (!data) {
-    throw new Error("Failed to generate Stanza document");
+  if (response.status !== 200) {
+    throw new Error("Failed to generate Stanza document.");
   }
 
   try {
     const sentenceStructureDocument =
-      createSentenceStructureDocumentFromStanzaParsedDocument(data);
+      createSentenceStructureDocumentFromStanzaParsedDocument(response.data);
 
     return {
       processingTime: endTime - startTime,
-      rawResponse: data,
+      rawResponse: response.data,
       success: true,
       sentenceStructureDocument,
     };
   } catch (error) {
     return {
       processingTime: endTime - startTime,
-      rawResponse: data,
+      rawResponse: response.data,
       success: false,
       errorMessage: error instanceof Error ? error.message : "",
     };

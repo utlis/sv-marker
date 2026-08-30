@@ -5,12 +5,12 @@
     "/tokenize": {
       "post": {
         "summary": "Tokenize Document",
-        "operationId": "tokenize_document_tokenize_post",
+        "operationId": "tokenize_document",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_tokenize_document_tokenize_post"
+                "$ref": "#/components/schemas/Body_tokenize_document"
               }
             }
           },
@@ -41,13 +41,11 @@
     "/parse": {
       "post": {
         "summary": "Parse Document",
-        "operationId": "parse_document_parse_post",
+        "operationId": "parse_document",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_parse_document_parse_post"
-              }
+              "schema": { "$ref": "#/components/schemas/Body_parse_document" }
             }
           },
           "required": true
@@ -77,12 +75,12 @@
     "/parse/conllu": {
       "post": {
         "summary": "Parse Document As Conllu",
-        "operationId": "parse_document_as_conllu_parse_conllu_post",
+        "operationId": "parse_document_as_conllu",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Body_parse_document_as_conllu_parse_conllu_post"
+                "$ref": "#/components/schemas/Body_parse_document_as_conllu"
               }
             }
           },
@@ -95,7 +93,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "title": "Response Parse Document As Conllu Parse Conllu Post"
+                  "title": "Response Parse Document As Conllu"
                 }
               }
             }
@@ -114,23 +112,23 @@
   },
   "components": {
     "schemas": {
-      "Body_parse_document_as_conllu_parse_conllu_post": {
+      "Body_parse_document": {
         "properties": { "text": { "type": "string", "title": "Text" } },
         "type": "object",
         "required": ["text"],
-        "title": "Body_parse_document_as_conllu_parse_conllu_post"
+        "title": "Body_parse_document"
       },
-      "Body_parse_document_parse_post": {
+      "Body_parse_document_as_conllu": {
         "properties": { "text": { "type": "string", "title": "Text" } },
         "type": "object",
         "required": ["text"],
-        "title": "Body_parse_document_parse_post"
+        "title": "Body_parse_document_as_conllu"
       },
-      "Body_tokenize_document_tokenize_post": {
+      "Body_tokenize_document": {
         "properties": { "text": { "type": "string", "title": "Text" } },
         "type": "object",
         "required": ["text"],
-        "title": "Body_tokenize_document_tokenize_post"
+        "title": "Body_tokenize_document"
       },
       "HTTPValidationError": {
         "properties": {
