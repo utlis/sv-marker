@@ -1,6 +1,4 @@
 import * as z from "zod";
-import createClient from "openapi-fetch";
-import type { paths } from "./generated/stanza-server/schema.js";
 import {
   GenerateContentResponse,
   GoogleGenAI,
@@ -8,6 +6,7 @@ import {
 } from "@google/genai";
 import type { SentenceStructureDocument } from "@sv-marker/sentence-structure-document";
 import { createSentenceStructureDocumentFromStanzaTokenizedDocument } from "@sv-marker/sentence-structure-document-from-stanza";
+import { tokenizeDocument } from "./generated/stanza-server/client.js";
 import type { GeminiModelName, GeminiThinkingLevel } from "./llm-parameters.js";
 import {
   generatePrompt,
@@ -18,10 +17,6 @@ import {
   createSentenceStructureDocumentFromWordsAndSentenceStructureAnnotationsOutputJSONString,
   SentenceStructureAnnotationsOutputSchema,
 } from "./sentence-structure-annotations-output-schema.js";
-
-const client = createClient<paths>({
-  baseUrl: process.env.STANZA_SERVER_ORIGIN ?? "",
-});
 
 const ai = new GoogleGenAI({ vertexai: true });
 
@@ -79,16 +74,14 @@ export async function generateSentenceStructureDocumentWithGemini(
   });
   const endTime = Date.now();
 
-  const { data } = await client.POST("/tokenize", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
-    throw new Error("Failed to tokenize text with Stanza");
+  const stanzaResponse = await tokenizeDocument({ text });
+  if (stanzaResponse.status !== 200) {
+    throw new Error("Failed to tokenize text with Stanza.");
   }
   const sentenceStructureDocumentFromStanza =
-    createSentenceStructureDocumentFromStanzaTokenizedDocument(data);
+    createSentenceStructureDocumentFromStanzaTokenizedDocument(
+      stanzaResponse.data,
+    );
 
   try {
     if (!response.text) throw new Error("AI returned no result");

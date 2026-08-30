@@ -1,10 +1,9 @@
-import createClient from "openapi-fetch";
-import type { paths } from "./generated/stanza-server/schema.js";
 import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod.js";
 import type { ParsedChatCompletion } from "openai/resources/chat/completions/completions.js";
 import type { SentenceStructureDocument } from "@sv-marker/sentence-structure-document";
 import { createSentenceStructureDocumentFromStanzaTokenizedDocument } from "@sv-marker/sentence-structure-document-from-stanza";
+import { tokenizeDocument } from "./generated/stanza-server/client.js";
 import type { GPTOSSReasoningEffort, VLLMModelName } from "./llm-parameters.js";
 import {
   generatePrompt,
@@ -16,10 +15,6 @@ import {
   SentenceStructureAnnotationsOutputSchema,
   type SentenceStructureAnnotationsOutput,
 } from "./sentence-structure-annotations-output-schema.js";
-
-const stanzaServerClient = createClient<paths>({
-  baseUrl: process.env.STANZA_SERVER_ORIGIN ?? "",
-});
 
 const openAIClient = new OpenAI({
   apiKey: process.env.VLLM_API_KEY,
@@ -100,16 +95,14 @@ export async function generateSentenceStructureDocumentWithVLLM(
   });
   const endTime = Date.now();
 
-  const { data } = await stanzaServerClient.POST("/tokenize", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
-    throw new Error("Failed to tokenize text with Stanza");
+  const stanzaResponse = await tokenizeDocument({ text });
+  if (stanzaResponse.status !== 200) {
+    throw new Error("Failed to tokenize text with Stanza.");
   }
   const sentenceStructureDocumentFromStanza =
-    createSentenceStructureDocumentFromStanzaTokenizedDocument(data);
+    createSentenceStructureDocumentFromStanzaTokenizedDocument(
+      stanzaResponse.data,
+    );
 
   try {
     if (!completion.choices[0]?.message.parsed)

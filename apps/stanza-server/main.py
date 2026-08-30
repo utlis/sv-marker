@@ -270,7 +270,7 @@ class StanzaParsedDocument(BaseModel):
     sentences: list["StanzaParsedSentence"]
 
 
-@app.post("/tokenize")
+@app.post("/tokenize", operation_id="tokenize_document")
 def tokenize_document(
     text: Annotated[str, Body(embed=True)], request: Request
 ) -> StanzaTokenizedDocument:
@@ -302,7 +302,7 @@ def tokenize_document(
     )
 
 
-@app.post("/parse")
+@app.post("/parse", operation_id="parse_document")
 def parse_document(
     text: Annotated[str, Body(embed=True)], request: Request
 ) -> StanzaParsedDocument:
@@ -347,7 +347,7 @@ def parse_document(
     )
 
 
-@app.post("/parse/conllu")
+@app.post("/parse/conllu", operation_id="parse_document_as_conllu")
 def parse_document_as_conllu(
     text: Annotated[str, Body(embed=True)], request: Request
 ) -> str:

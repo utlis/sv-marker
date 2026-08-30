@@ -1,10 +1,9 @@
-import createClient from "openapi-fetch";
-import type { paths } from "./generated/stanza-server/schema.js";
 import { AzureOpenAI } from "openai";
 import { zodTextFormat } from "openai/helpers/zod.js";
 import type { ParsedResponse } from "openai/resources/responses/responses.js";
 import type { SentenceStructureDocument } from "@sv-marker/sentence-structure-document";
 import { createSentenceStructureDocumentFromStanzaTokenizedDocument } from "@sv-marker/sentence-structure-document-from-stanza";
+import { tokenizeDocument } from "./generated/stanza-server/client.js";
 import type {
   OpenAIModelName,
   OpenAIReasoningEffort,
@@ -19,10 +18,6 @@ import {
   SentenceStructureAnnotationsOutputSchema,
   type SentenceStructureAnnotationsOutput,
 } from "./sentence-structure-annotations-output-schema.js";
-
-const stanzaServerClient = createClient<paths>({
-  baseUrl: process.env.STANZA_SERVER_ORIGIN ?? "",
-});
 
 const azureOpenAIClient = new AzureOpenAI({
   endpoint: process.env.AZURE_OPENAI_ENDPOINT,
@@ -96,16 +91,14 @@ export async function generateSentenceStructureDocumentWithOpenAI(
   });
   const endTime = Date.now();
 
-  const { data } = await stanzaServerClient.POST("/tokenize", {
-    body: {
-      text,
-    },
-  });
-  if (!data) {
-    throw new Error("Failed to tokenize text with Stanza");
+  const stanzaResponse = await tokenizeDocument({ text });
+  if (stanzaResponse.status !== 200) {
+    throw new Error("Failed to tokenize text with Stanza.");
   }
   const sentenceStructureDocumentFromStanza =
-    createSentenceStructureDocumentFromStanzaTokenizedDocument(data);
+    createSentenceStructureDocumentFromStanzaTokenizedDocument(
+      stanzaResponse.data,
+    );
 
   try {
     if (!response.output_parsed) throw new Error("AI returned no result");
